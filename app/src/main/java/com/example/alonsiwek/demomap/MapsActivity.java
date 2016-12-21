@@ -48,6 +48,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private synchronized void buildGoogleApiClient() {
+        // this function build the google api
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */,
                         this /* OnConnectionFailedListener */)
