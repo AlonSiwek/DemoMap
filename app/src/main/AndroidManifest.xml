@@ -22,6 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- Splash screen -->
         <activity android:name="Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,6 +32,8 @@
         </activity>
 
         <!--
+        ***Google Maps***
+
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
              Note that the API key is linked to the encryption key used to sign the APK.
@@ -41,7 +44,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
 
 
         <activity
@@ -66,6 +68,7 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>
