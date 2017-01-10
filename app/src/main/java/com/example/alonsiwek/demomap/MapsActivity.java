@@ -1,9 +1,5 @@
 package com.example.alonsiwek.demomap;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
@@ -12,8 +8,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.view.View;
-import android.widget.Button;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -41,10 +35,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private long UPDATE_INTERVAL_IN_MILLISECONDS = 5000;
     private long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = 5000;
 
-    /**********************************************/
-    Button btn_notification;
-    /**********************************************/
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,36 +45,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
         buildGoogleApiClient(); //connecting google api for my currrnt location
         mGoogleApiClient.connect();
-
-        //**************************************************************
-        //this sections is for the notifications
-        btn_notification = (Button)findViewById(R.id.notifications_checks_button);
-        btn_notification.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent();
-                        PendingIntent pendingIntent = PendingIntent.getActivity(MapsActivity.this,0,intent,0);
-                        Notification notification = new Notification.Builder(MapsActivity.this)
-                                .setTicker("??Ticker?? title")
-                                .setContentTitle("Content title : the notification name")
-                                .setContentText("Content text - notification text")
-                                .setSmallIcon(R.drawable.ic_stat_name)
-                                .setContentIntent(pendingIntent).getNotification();
-
-
-                        //when we click on the notification, it will cancel it
-                        notification.flags = Notification.FLAG_AUTO_CANCEL;
-
-                        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                        notificationManager.notify(0,notification);
-                    }
-                }
-        );
     }
 
     private synchronized void buildGoogleApiClient() {
-        // this function build the google api
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */,
                         this /* OnConnectionFailedListener */)
@@ -241,6 +204,4 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onConnectionSuspended(int i) {
 
     }
-
-
 }
