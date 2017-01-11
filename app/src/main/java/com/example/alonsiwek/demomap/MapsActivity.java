@@ -348,17 +348,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         if (attributions != null) {
                             snippet = snippet + "\n" + attributions;
                         }
-
-                        mMap.addMarker(new MarkerOptions()
-                                .position(placeLikelihood.getPlace().getLatLng())
-                                .title((String) placeLikelihood.getPlace().getName())
-                                .snippet(snippet));
+                        LatLng bot = new LatLng(32.165890, 34.823126);
+                        mMap.addMarker(new MarkerOptions().position(bot).title("bot"));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(bot));
+/////////////////update markers nearby
+//                        mMap.addMarker(new MarkerOptions()
+//                                .position(placeLikelihood.getPlace().getLatLng())
+//                                .title((String) placeLikelihood.getPlace().getName())
+//                                .snippet(snippet));
                     }
                     // Release the place likelihood buffer.
                     likelyPlaces.release();
                 }
             });
-        } else {
+        }
+        else {
             mMap.addMarker(new MarkerOptions()
                     .position(mDefaultLocation)
                     .title(getString(R.string.default_info_title))
