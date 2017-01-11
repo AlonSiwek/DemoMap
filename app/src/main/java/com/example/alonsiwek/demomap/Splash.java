@@ -24,7 +24,9 @@ public class Splash extends AppCompatActivity {
             @Override
             public void run() {
                 /* Create an Intent that will start the Menu-Activity. */
-                Intent mainIntent = new Intent(Splash.this,MapsActivity.class);
+
+                //sent intent to main screen. usded by:  new Intent(Splash.this,MapsActivity.class);
+                Intent mainIntent = new Intent(Splash.this,MainScreen.class);
                 Splash.this.startActivity(mainIntent);
                 Splash.this.finish();
             }
