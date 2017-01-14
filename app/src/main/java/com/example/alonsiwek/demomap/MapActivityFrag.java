@@ -8,16 +8,14 @@ import android.view.ViewGroup;
 
 /**
  * Created by dor on 1/11/2017.
- * This class is the Fragment calls of the main screen
+ * his class is the Fragment calls of the MapActivity.
  */
 
-public class MainPageFrag extends Fragment{
+public class MapActivityFrag extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.main_screen,null);
-
-        // Create UI components here.
+        View view = inflater.inflate(R.layout.activity_maps, null);
 
         return view;
     }
