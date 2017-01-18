@@ -103,8 +103,10 @@ public class MainScreen extends AppCompatActivity {
              * Setup the fragments, defining the number of fragments, the screens and title
              */
             _fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+
                 @Override
                 public Fragment getItem(final int position) {
+
                     return listFragments.get(position);
                 }
 
