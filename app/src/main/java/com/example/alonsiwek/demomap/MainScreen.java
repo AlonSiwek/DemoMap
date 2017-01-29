@@ -17,9 +17,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +24,9 @@ import java.util.List;
 
 public class MainScreen extends AppCompatActivity {
 
-    Button btn_go;
-    View view;
-    TextView msg;
+//    Button btn_go;
+//    View view;
+//    TextView msg;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
