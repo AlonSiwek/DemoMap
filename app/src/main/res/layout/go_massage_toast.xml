@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/go_massage_toast_container"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    android:background="@drawable/gomassagebutton">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:textColor="#FFF"
+        android:textSize="20dp"
+        android:textDirection="ltr"
+        android:id="@+id/go_massage_toast_TextView" />
+
+</LinearLayout>

@@ -17,6 +17,9 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +27,34 @@ import java.util.List;
 
 public class MainScreen extends AppCompatActivity {
 
+    Button btn_go;
+    View view;
+    TextView msg;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.main_screen);
+
+////////// part of toast ////////////////////////////////
+//        view = getLayoutInflater().inflate(R.layout.go_massage_toast,
+//                (ViewGroup) findViewById(R.id.go_massage_toast_container));
+//        msg = (TextView)view.findViewById(R.id.go_massage_toast_TextView);
     }
+//////////////////////////// part of toast ////////////////////////
+//
+//    public void go_toast(View v){
+//
+//        msg.setText("Notifications has been sent to your friends, Lets go Walkii!");
+//
+//        Toast toast = new Toast(getApplicationContext());
+//        toast.setGravity(Gravity.BOTTOM,0,100);
+//        toast.setDuration(Toast.LENGTH_LONG); // 3.5 sec
+//        toast.setView(view);
+//        toast.show();
+//
+//    }
 
     // Adapter for the view pager
     public static class PageAdapter extends FragmentActivity {
@@ -96,8 +121,11 @@ public class MainScreen extends AppCompatActivity {
             setContentView(R.layout.main_screen);
 
             // Create fragments.
+
             listFragments.add(FRAGMENT_ONE_MAINSCREEN, new MainPageFrag());
             listFragments.add(FRAGMENT_TWO_MAP, new MapActivityFrag());
+
+
 
             /*
              * Setup the fragments, defining the number of fragments, the screens and title
