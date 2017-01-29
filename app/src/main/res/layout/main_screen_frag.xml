@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:weightSum="1"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:id="@+id/main_screen_frag_layout">
 
     <TextView
         android:layout_width="386dp"

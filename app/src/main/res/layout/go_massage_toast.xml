@@ -13,6 +13,8 @@
         android:textColor="#FFF"
         android:textSize="20dp"
         android:textDirection="ltr"
-        android:id="@+id/go_massage_toast_TextView" />
+        android:id="@+id/go_massage_toast_TextView"
+        android:text="Notifications has neen sent to your friends  \n Let's GO!"
+        android:textAlignment="center"/>
 
 </LinearLayout>

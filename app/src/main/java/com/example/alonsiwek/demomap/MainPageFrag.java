@@ -18,7 +18,7 @@ public class MainPageFrag extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.main_screen_frag, null);
 
@@ -33,17 +33,23 @@ public class MainPageFrag extends Fragment {
 
             @Override
             public void onClick(View v) {
-                // Create a Toast notification/message
-                Toast toast = Toast.makeText(
-                        getActivity().getApplicationContext(), "Notifications has been sent to your friends"
-                                , Toast.LENGTH_LONG);
+                // Get the application context
+                Toast toast = new Toast(getContext());
                 // Set the Toast display position layout center
                 toast.setGravity(Gravity.CENTER,0,0);
-                // Finally, show the toast
+
+                LayoutInflater inflater = getLayoutInflater(savedInstanceState);
+                View layout = inflater.inflate(R.layout.go_massage_toast,null);
+
+                // Set the Toast duration
+                toast.setDuration(Toast.LENGTH_LONG);
+
+                // Set the Toast custom layout
+                toast.setView(layout);
                 toast.show();
+                ///////////////  END part of toast //////////////////////////////
             }
         });
-///////////////  END part of toast //////////////////////////////
         return view;
     }
 }
