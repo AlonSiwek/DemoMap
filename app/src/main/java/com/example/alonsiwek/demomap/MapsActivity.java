@@ -370,7 +370,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }
                         LatLng bot = new LatLng(32.165890, 34.823126);
                         mMap.addMarker(new MarkerOptions().position(bot).title("bot"));
+
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(bot));
+
 /////////////////update markers nearby
 //                        mMap.addMarker(new MarkerOptions()
 //                                .position(placeLikelihood.getPlace().getLatLng())
