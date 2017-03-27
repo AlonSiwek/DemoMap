@@ -34,6 +34,13 @@
             </intent-filter>
         </activity>
 
+        <!-- Main screen (Go screen) -->
+        <activity android:name=".MainScreen$PageAdapter">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+            </intent-filter>
+        </activity>
+
         <!--
         ***Google Maps***
 

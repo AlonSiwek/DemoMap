@@ -11,7 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 
 public class Splash extends AppCompatActivity {
     /** Duration of wait **/
-    private final int SPLASH_DISPLAY_LENGTH = 2500;
+    private final int SPLASH_DISPLAY_LENGTH = 1800;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +24,9 @@ public class Splash extends AppCompatActivity {
             @Override
             public void run() {
                 /* Create an Intent that will start the Menu-Activity. */
-                Intent mainIntent = new Intent(Splash.this,MapsActivity.class);
+
+                //sent intent to main screen. use by:  new Intent(Splash.this,MapsActivity.class);
+                Intent mainIntent = new Intent(Splash.this,MainScreen.PageAdapter.class);
                 Splash.this.startActivity(mainIntent);
                 Splash.this.finish();
             }

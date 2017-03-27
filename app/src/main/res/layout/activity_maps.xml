@@ -4,62 +4,63 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center">
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layoutDirection="locale"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:textColor="#ff000000"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/snippet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#ff7f7f7f" />
-    </LinearLayout>
-
-    <!--<fragment-->
-        <!--android:id="@+id/map"-->
-        <!--android:name="com.google.android.gms.maps.SupportMapFragment"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_weight="1"-->
-        <!--tools:context=".MapsActivity"-->
-        <!--android:layout_height="300dp" />-->
+    android:gravity="center"
+    android:weightSum="1"
+    android:id="@+id/map_container">
 
 
+    <!--  how to insert the fragment inside??? -->
+    <android.support.v4.view.ViewPager
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="269dp"
+        android:id="@+id/page2_map"
+        android:layout_weight="1.30">
+    </android.support.v4.view.ViewPager>
 
 
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <com.google.android.gms.maps.MapView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        tools:context="com.example.currentplacedetailsonmap.MapsActivityCurrentPlaces" />
+        android:layout_width="355dp"
+        android:layout_height="394dp"
+        android:layout_marginTop="12dp"/>
 
-    <!--<ImageButton-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--app:srcCompat="@android:drawable/ic_menu_mylocation"-->
-        <!--android:id="@+id/imageButton"-->
-        <!--android:layout_weight="0.20" />-->
+    <!--tools:context="com.example.currentplacedetailsonmap.MapsActivityCurrentPlaces"
+    class="com.google.android.gms.maps.SupportMapFragment"
+    android:name="com.google.android.gms.maps.SupportMapFragment"  -->
 
-    <!-- Note: this button is only for check the notifications!!! -->
 
-    <Button
-        android:text="Button for notifications checks"
-        android:textSize="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/notifications_checks_button"
-        android:onClick="showNotifications"/>
+<Button
+   android:text="Button for notifications checks"
+   android:textSize="16dp"
+   android:layout_width="wrap_content"
+   android:layout_height="96dp"
+   android:id="@+id/notifications_checks_button"
+   android:onClick="showNotifications"
+   android:visibility="invisible" />
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:layoutDirection="locale"
+   android:orientation="vertical">
+
+
+   <TextView
+       android:id="@+id/title"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_gravity="center_horizontal"
+       android:textColor="#ff000000"
+       android:textStyle="bold" />
+
+   <TextView
+       android:id="@+id/snippet"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:textColor="#ff7f7f7f" />
+</LinearLayout>
+
 
 </LinearLayout>

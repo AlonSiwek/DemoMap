@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:id="@+id/main_screen_frag_layout">
+
+    <TextView
+        android:layout_width="386dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/appName_txtView"
+        android:text="Walkii"
+        android:textSize="32dp"
+        android:textColor="@color/cast_intro_overlay_background_color"
+        android:gravity="center"
+        android:paddingTop="6dp"/>
+
+    <Button
+        android:text="GO!"
+        android:layout_width="166dp"
+        android:layout_height="158dp"
+        android:id="@+id/go_walking_btn"
+        android:background="@drawable/roundbutton"
+        android:gravity="center"
+        android:layout_marginTop="30dp"
+        android:onClick="go_toast"
+        />
+
+</LinearLayout>
