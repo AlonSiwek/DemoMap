@@ -10,6 +10,8 @@ package com.example.alonsiwek.demomap;
  * 2) swipes
  */
 
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,23 +20,19 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
+import com.google.android.gms.location.LocationServices;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class MainScreen extends AppCompatActivity {
 
-//    Button btn_go;
-//    View view;
-//    TextView msg;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.main_screen);
-
-
     }
 
     // Adapter for the view pager
@@ -69,6 +67,7 @@ public class MainScreen extends AppCompatActivity {
         ******************************************************/
 
         // The number of Total Pages in the app
+        // Note: NOT INCREMENT if there is no page added
         private static int NUM_PAGES_FRAGMENTS = 2;
 
         /*
@@ -98,15 +97,11 @@ public class MainScreen extends AppCompatActivity {
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-
             setContentView(R.layout.main_screen);
 
             // Create fragments.
-
             listFragments.add(FRAGMENT_ONE_MAINSCREEN, new MainPageFrag());
             listFragments.add(FRAGMENT_TWO_MAP, new MapActivityFrag());
-
-
 
             /*
              * Setup the fragments, defining the number of fragments, the screens and title
@@ -138,6 +133,7 @@ public class MainScreen extends AppCompatActivity {
             };
             viewPager = (ViewPager) findViewById(R.id.page1_main);
             viewPager.setAdapter(_fragmentPagerAdapter);
+
         }
     }
 }

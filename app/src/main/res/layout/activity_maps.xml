@@ -23,7 +23,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/map"
         android:layout_width="355dp"
-        android:layout_height="394dp"
+        android:layout_height="461dp"
         android:layout_marginTop="12dp"/>
 
     <!--tools:context="com.example.currentplacedetailsonmap.MapsActivityCurrentPlaces"
@@ -34,8 +34,8 @@
 <Button
    android:text="Button for notifications checks"
    android:textSize="16dp"
-   android:layout_width="wrap_content"
-   android:layout_height="96dp"
+   android:layout_width="169dp"
+   android:layout_height="wrap_content"
    android:id="@+id/notifications_checks_button"
    android:onClick="showNotifications"
    android:visibility="invisible" />
