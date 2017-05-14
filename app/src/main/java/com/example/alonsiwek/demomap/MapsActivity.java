@@ -32,7 +32,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
+/*
+    TODO: Implement google maps with using the mCurrentLocation member
+    TODO: Copy the GUI google map from `MapsActivityFrag`.
+ */
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,
         LocationListener {
@@ -71,9 +74,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      ***********************************************/
 
     Button btn_notification;
-
-    //  end of buttons
-    ///////////////////////////////////////////////////////
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,6 +196,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onLocationChanged(Location location) {
         mCurrentLocation = location;
         updateMarkers();
+        // TODO: Update the Google map on the screen
+        // TODO: Send the location information to MongoDB
+        // TODO: Figure out a way to share `mCurrentLocation` across fragments
     }
 
     /**
@@ -210,48 +213,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         updateLocationUI();
         // Add markers for nearby places.
         updateMarkers();
-
-//        // Use a custom info window adapter to handle multiple lines of text in the
-//        // info window contents.
-//        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-//
-//            @Override
-//            // Return null here, so that getInfoContents() is called next.
-//            public View getInfoWindow(Marker arg0) {
-//                return null;
-//            }
-//
-//            @Override
-//            public View getInfoContents(Marker marker) {
-//                // Inflate the layouts for the info window, title and snippet.
-//                View infoWindow = getLayoutInflater().inflate(R.layout.custom_info_contents, null);
-//
-//                TextView title = ((TextView) infoWindow.findViewById(R.id.title));
-//                title.setText(marker.getTitle());
-//
-//                TextView snippet = ((TextView) infoWindow.findViewById(R.id.snippet));
-//                snippet.setText(marker.getSnippet());
-//
-//                return infoWindow;
-//            }
-//        });
-//        /*
-//         * Set the map's camera position to the current location of the device.
-//         * If the previous state was saved, set the position to the saved state.
-//         * If the current location is unknown, use a default position and zoom value.
-//         */
-//        if (mCameraPosition != null) {
-//            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(mCameraPosition));
-//        } else if (mCurrentLocation != null) {
-//            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-//                    new LatLng(mCurrentLocation.getLatitude(),
-//                            mCurrentLocation.getLongitude()), DEFAULT_ZOOM));
-//        } else {
-//            Log.d(TAG, "Current location is null. Using defaults.");
-//            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
-//            mMap.getUiSettings().setMyLocationButtonEnabled(false);
-//        }
-    }
+            }
 
     /**
      * Builds a GoogleApiClient.
@@ -409,5 +371,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
             mCurrentLocation = null;
         }
+    }
+
+    public Location getLastLocation()
+    {
+        return this.mCurrentLocation;
     }
 }

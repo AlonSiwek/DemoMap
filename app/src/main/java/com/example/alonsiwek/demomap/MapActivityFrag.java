@@ -8,6 +8,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.vision.barcode.Barcode;
 
 import static android.R.attr.fragment;
 import static com.example.alonsiwek.demomap.R.id.map;
@@ -71,13 +73,13 @@ public class MapActivityFrag extends Fragment {
                 LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
                 Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(new Criteria(), false));
 
-                double myLat = location.getLatitude();
-                double myLong = location.getLongitude();
-
-
-                // For zooming automatically to my location
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(myLat, myLong), 10);
-                mMap.animateCamera(cameraUpdate);
+                if (location != null) {
+                    double myLat = location.getLatitude();
+                    double myLong = location.getLongitude();
+                    // For zooming automatically to my location
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(myLat, myLong), 10);
+                    mMap.animateCamera(cameraUpdate);
+                }
             }
         });
 
