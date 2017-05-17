@@ -60,7 +60,7 @@ public class PostLocationAtFirstLogin extends AsyncTask<JSONObject,String,String
 
         try {
             //String url_path = "https://walkiii.herokuapp.com/api/locationStatus/";
-            String url_path = "http://192.168.56.1:8080/api/usersAtApp";
+            String url_path = "http:// 192.168.0.112 :8080/api/usersAtApp"; //  192.168.56.1
             return postData(url_path);
         } catch (IOException ex){
             Log.d("PostLocation", "fail to connect!");

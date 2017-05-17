@@ -17,7 +17,7 @@ import java.util.Date;
 
 public class Splash extends AppCompatActivity {
     /** Duration of wait **/
-    private final int SPLASH_DISPLAY_LENGTH = 2000;
+    private final int SPLASH_DISPLAY_LENGTH = 2500;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

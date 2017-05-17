@@ -157,7 +157,8 @@ public class LocationUpdateService extends Service {
         //TODO: note - change ip with ipcongig
         // String urlPath = "https://walkiii.herokuapp.com/api/locationStatus/" ;
 
-        String urlPath = "http://192.168.56.1:8080/api/locationStatus/";
+        String urlPath = "http://192.168.0.112:8080/api/locationStatus/"; //   192.168.56.1
+
 
         BufferedReader bufferedReader = null;
         BufferedWriter bufferedWriter = null;
