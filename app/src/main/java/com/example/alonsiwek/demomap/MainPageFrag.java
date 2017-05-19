@@ -7,12 +7,29 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 
 /**
  * Created by dor on 1/11/2017.
@@ -21,6 +38,8 @@ import android.widget.Toast;
 
 public class MainPageFrag extends Fragment {
 
+    Boolean mIsRunning = false;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
@@ -28,17 +47,21 @@ public class MainPageFrag extends Fragment {
         View view = inflater.inflate(R.layout.main_screen_frag, null);
 
         // get the widgets reference from Fragment XML layout
-        Button btn_go = (Button) view.findViewById(R.id.go_walking_btn);
+        ImageButton btn_go = (ImageButton) view.findViewById(R.id.go_walking_btn);
 
+
+
+
+        //TODO: decide of earse TOAST
 ///////////////   part of toast //////////////////////////////
 
         // Set a click listener for Fragment button
-        btn_go.setOnClickListener(new View.OnClickListener(){
+        btn_go.setOnClickListener(new View.OnClickListener() {
+
+
 
             @Override
             public void onClick(View v) {
-
-                this.sendLocationOnClick(v);
 
                 // Get the application context
                 Toast toast = new Toast(getContext());
@@ -54,65 +77,93 @@ public class MainPageFrag extends Fragment {
                 // Set the Toast custom layout
                 toast.setView(layout);
                 toast.show();
-            }
-         ///////////////  END part of toast //////////////////////////////
 
-          /////////////////part of send location to server //////////////////////
+                ///////////////  END part of toast //////////////////////////////
 
-            public void sendLocationOnClick(View v) {
-                double latitude;
-                double longitude;
-                Location location = null;
-                LocationManager locationManager = (LocationManager) getContext()
-                        .getSystemService(Context.LOCATION_SERVICE);
+                mIsRunning = !mIsRunning;
 
-                // getting GPS status
-                Boolean isGPSEnabled = locationManager
-                        .isProviderEnabled(LocationManager.GPS_PROVIDER);
-
-                // getting network status
-                Boolean isNetworkEnabled = locationManager
-                        .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-
-                if (!isGPSEnabled && !isNetworkEnabled) {
-                    // no network provider is enabled
-                } else {
-                    if (isNetworkEnabled) {
-                        if (locationManager != null) {
-                            location = locationManager
-                                    .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                            if (location != null) {
-                                latitude = location.getLatitude();
-                                longitude = location.getLongitude();
-                            }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                        updateRunningState(mIsRunning);
+                        }
+                        catch (IOException e) {
+                            Log.e(MainPageFrag.class.toString(), e.toString());
+                            e.printStackTrace();
+                            return;
                         }
                     }
-                    // if GPS Enabled get lat/long using GPS Services
-                    if (isGPSEnabled) {
-                        if (location == null) {
-
-                            if (locationManager != null) {
-                                location = locationManager
-                                        .getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                                if (location != null) {
-
-                                    latitude = location.getLatitude();
-                                    longitude = location.getLongitude();
-
-                                }
-                            }
-                        }
-                    }
-                }
+                }).start();
             }
         });
 
-    /////////// Make Get request ////////////////////
-//    new GetUsersLocation().execute
-//            ("https://walkiii.herokuapp.com/api/locationStatus/search_users_around_me");
-
-    return view;
+        return view;
     }
+
+    static void updateRunningState(Boolean state) throws IOException {
+
+        JSONObject json = new JSONObject();
+        URL url;
+        BufferedReader bufferedReader = null;
+        BufferedWriter bufferedWriter = null;
+
+        try {
+            json.put("is_running", state);
+        } catch (JSONException e) {
+            Log.e(MainPageFrag.class.toString(), "json error: " + e.toString());
+            e.printStackTrace();
+            return;
+        }
+
+        try {
+           url = new URL(Constants.SERVER_URL + Constants.LOC_STATUS_PATH + Constants.user_id);
+        } catch (MalformedURLException e) {
+            Log.e(MainPageFrag.class.toString(), "error at url: "  + e.toString());
+            e.printStackTrace();
+            return;
+        }
+
+        HttpURLConnection urlConnection = null;
+        urlConnection = (HttpURLConnection) url.openConnection();
+        urlConnection.setDoOutput(true);
+        //set the time to read from url - in miliSec
+        urlConnection.setReadTimeout(10000);
+        //set time to be used when opening a communications link
+        // to the resource referenced by this URLConnection connect to url
+        urlConnection.setConnectTimeout(10000);
+        urlConnection.setRequestMethod("PUT");
+
+        // enable output
+        urlConnection.setDoOutput(true);
+        //set header
+        urlConnection.setRequestProperty("Content-Type","application/json");
+
+        urlConnection.connect();
+
+        Log.d(MainPageFrag.class.toString(),"Connecting");
+
+        //Post data to server
+        OutputStream outputStream = null;
+
+        outputStream = urlConnection.getOutputStream();
+        bufferedWriter = new BufferedWriter((new OutputStreamWriter(outputStream)));
+        bufferedWriter.write(json.toString());
+
+        Log.d(MainPageFrag.class.toString(),"written to server");
+        bufferedWriter.flush();
+
+        if ( urlConnection.getResponseCode() != 200) {
+            Log.e(MainPageFrag.class.toString()," response code error:" + urlConnection.getResponseCode());
+            return;
+        }
+
+        // disconnect
+        urlConnection.disconnect();
+    }
+
+
+
 
     @Override
     public void onResume(){

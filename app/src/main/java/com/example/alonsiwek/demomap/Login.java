@@ -57,16 +57,12 @@ public class Login extends Activity {
             @Override
             public void onClick(View v) {
 
-                String getPhone;
-                String getUserName;
-
                 //save the data
                 SharedPreferences preferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("PhoneNumber", phoneNumber.getText().toString());
                 editor.putString("Name", userName.getText().toString());
                 editor.commit();
-
                 // new PostLocationAtFirstLogin(Login.this.getApplicationContext()).execute();
                 PostLocationAtFirstLogin postLocationAtFirstLogin =
                         new PostLocationAtFirstLogin(Login.this.getApplicationContext());
@@ -85,12 +81,15 @@ public class Login extends Activity {
                 //get the user ID out
                 try {
                     JSONObject json = new JSONObject(dataOut);
-                    editor.putString("User_ID",json.getString("_id"));
+                    String id = json.getString("_id");
+                    editor.putString("uid", id);
                     Log.d("Login"," the user ID is:" + json.getString("_id")) ;
                     editor.commit();
+                    Constants.loadSharedPrefs(preferences);
                 } catch (JSONException e) {
                     Log.d("Login"," could NOT get USER_ID") ;
                     e.printStackTrace();
+                    return;
                 }
 
                 // call to service

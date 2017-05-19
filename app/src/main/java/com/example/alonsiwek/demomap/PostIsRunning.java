@@ -1,15 +1,11 @@
 package com.example.alonsiwek.demomap;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.View;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,92 +20,108 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-import javax.net.ssl.HttpsURLConnection;
+import java.text.DateFormat;
+import java.util.Date;
 
 import static android.content.Context.LOCATION_SERVICE;
 import static android.content.Context.MODE_PRIVATE;
 
 /**
- * Created by Dor on 01-May-17.
- * Upload the user basic data to Date Base at the first time that the user use the app
- * Note: USER_ID is actually the id of THE DOCUMENT IN THE MONGO-DB
+ * Created by Dor on 17-May-17.
+ * Update the data base when user is walking
  */
 
-public class PostLocationAtFirstLogin extends AsyncTask<JSONObject,String,String> {
+public class PostIsRunning extends AsyncTask <Object , Void , String > {
 
-    ProgressDialog progressDialog;
-    private Context ctx;
-
-    //Only use for the get the context of the app for SharedPreferences
-    public PostLocationAtFirstLogin(Context context){
-        super();
-        this.ctx = context;
-    }
+    private Context context;
+    private String user_id;
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        this.user_id = this.context.getSharedPreferences("UserInfo",MODE_PRIVATE).getString("User_ID", "NO_ID");
     }
 
-    @Override
-    final protected String doInBackground(JSONObject... params) {
-        // TODO: change to the final url
-        //TODO: note - change ip with ipcongig
-        // TODO: change HTTP / HTTPS
 
+    @Override
+    protected String doInBackground(Object... params) {
+
+        String who_isRunning;
         try {
-            //String url_path = "https://walkiii.herokuapp.com/api/locationStatus/";
-            String url_path = Constants.SERVER_URL + Constants.LOC_STATUS_PATH; //  192.168.56.1
-            return postData(url_path);
+            who_isRunning = updateIsRunnig();
+            Log.d("PostIsRunning" , "SUCCEED");
+            return who_isRunning;
+
         } catch (IOException ex){
-            Log.d("PostLocation", "fail to connect!");
-            Log.d("PostLocation", "doInBackground: " + ex);
-            return "NETWORK ERROR";
+            Log.d("PostIsRunning", "fail to connect!");
+            Log.d("PostIsRunning", "doInBackground: " + ex);
+            return " FAIL ";
         } catch (JSONException ex){
-            Log.d("PostLocation", "Problem with json");
-            Log.d("PostLocation", "doInBackground" + ex );
-            return "DATA INVALID";
+            Log.d("PostIsRunning", "Problem with json");
+            Log.d("PostIsRunning", "doInBackground" + ex );
+            return " FAIL ";
+        }
+    }
+
+    private String updateIsRunnig() throws IOException , JSONException{
+
+        String urlPath = Constants.SERVER_URL + Constants.LOC_STATUS_PATH + this.user_id ;
+                //String url_path = "https://walkiii.herokuapp.com/api/isRunning/return_isRunning/";
+
+
+        // get the current location for the JSON
+        LocationManager locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
+        Location currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        if (currentLocation != null) {
+            Log.d("PostIsRunning", "the location is: " + currentLocation);
+        } else {
+            Log.d("PostIsRunning", "location is : NULL");
         }
 
-    }
+        JSONObject user_is_running = new JSONObject();
+        JSONObject inside_loc = new JSONObject();
 
-    @Override
-    protected void onPostExecute(String result) {
-        super.onPostExecute(result);
-    }
+        // Pass Long & Lat
+        JSONArray coordinates = new JSONArray();
+        coordinates.put(currentLocation.getLongitude());  //long
+        coordinates.put(currentLocation.getLatitude());  //lat
 
-    private String postData(String urlPath) throws IOException , JSONException{
+        StringBuilder result_whoIsRunning = new StringBuilder();
 
         BufferedReader bufferedReader = null;
         BufferedWriter bufferedWriter = null;
-        JSONObject firstPostOnDB = new JSONObject();
-        StringBuilder result = new StringBuilder();
+
         // Posting
         try {
             //get the data of phone number, user name and user ID from SharedPreferences
-            SharedPreferences getSharedPreff = ctx.getSharedPreferences("UserInfo",MODE_PRIVATE);
-            String data_phone = getSharedPreff.getString("PhoneNumber" , "NUMBER IS NOT AVAILABLE");
+            SharedPreferences getSharedPreff = context.getSharedPreferences("UserInfo",MODE_PRIVATE);
+            String data_phone = getSharedPreff.getString("PhoneNumber" , " NUMBER IS NOT AVAILABLE");
             String data_name = getSharedPreff.getString("Name", "NAME IS NOT AVAILABLE");
 
-            Log.d("PostLocationFirstLogin"," user phone : " + data_phone);
-            Log.d("PostLocationFirstLogin", " user name : " + data_name);
+            Log.d("PostIsRunning"," user phone : " + data_phone);
+            Log.d("PostIsRunning", "user name : " + data_name);
 
             //Build JSON
-            firstPostOnDB.put("user_name", data_name);
-            firstPostOnDB.put("user_phone", data_phone);
+            inside_loc.put("type","Point");
+            inside_loc.put("coordinates",coordinates);
+            user_is_running.put("loc",inside_loc);
+            user_is_running.put("user_name", data_name);
+            user_is_running.put("phone_number", data_phone);
+            user_is_running.put("is_running", true);
+            user_is_running.put("time", DateFormat.getDateTimeInstance().format(new Date()));
 
             // Open connection to the server
             // Open url for reading
             URL url = new URL(urlPath);
             HttpURLConnection urlConnection = null;
 
-           // try to connect the url
+            // try to connect the url
             try {
                 urlConnection = (HttpURLConnection) url.openConnection();
-                Log.d("PostLocationFirstLogin" , String.valueOf(urlConnection));
+                Log.d("PostIsRunning" , String.valueOf(urlConnection));
             } catch ( IOException e){
-                Log.d("PostLocationFirstLogin" , String.valueOf(e));
+                Log.d("PostIsRunning" , String.valueOf(e));
             }
 
             urlConnection.setDoOutput(true);
@@ -125,14 +137,14 @@ public class PostLocationAtFirstLogin extends AsyncTask<JSONObject,String,String
             urlConnection.setRequestProperty("Content-Type","application/json");
 
             urlConnection.connect();
-            Log.d("PostLocation","Connecting");
+            Log.d("PostIsRunning","Connecting");
 
             //Post data to server
             OutputStream outputStream = urlConnection.getOutputStream();
             bufferedWriter = new BufferedWriter((new OutputStreamWriter(outputStream)));
-            bufferedWriter.write(firstPostOnDB.toString());
+            bufferedWriter.write(user_is_running.toString());
 
-            Log.d("PostLocation","written to server");
+            Log.d("PostIsRunning","written to server");
 
             bufferedWriter.flush();
 
@@ -143,29 +155,28 @@ public class PostLocationAtFirstLogin extends AsyncTask<JSONObject,String,String
 
             try{
                 inputStream = urlConnection.getInputStream();
-                Log.d("PostLocation", " urlConnection.getInputStream() : " + String.valueOf(urlConnection.getInputStream()));
+                Log.d("PostIsRunning", " urlConnection.getInputStream() : " + String.valueOf(urlConnection.getInputStream()));
             } catch (IOException ioe){
                 if ( urlConnection instanceof  HttpURLConnection){
                     HttpURLConnection httpURLConnection = (HttpURLConnection) urlConnection;
                     int statusCode = httpURLConnection.getResponseCode();
-                    Log.d("PostLocation", " error code number: " + String.valueOf(statusCode));
+                    Log.d("PostIsRunning", " error code number: " + String.valueOf(statusCode));
                     if (statusCode != 200){
                         inputStream = httpURLConnection.getErrorStream();
-                        Log.d("PostLocation", String.valueOf(inputStream));
+                        Log.d("PostIsRunning", String.valueOf(inputStream));
                     }
                 }
             }
             //////////////////////////////////////////////////////////////////////////////
-            Log.d("PostLocation","connection OK");
+            Log.d("PostIsRunning","connection OK");
 
             bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             String line;
 
             while ((line = bufferedReader.readLine()) != null){
-                result.append(line).append("\n" );
+                result_whoIsRunning.append(line).append("\n" );
 
-                Log.d("PostLocation", String.valueOf(result));
-
+                Log.d("PostIsRunning", String.valueOf(result_whoIsRunning));
             }
             // disconnect
             urlConnection.disconnect();
@@ -178,11 +189,9 @@ public class PostLocationAtFirstLogin extends AsyncTask<JSONObject,String,String
             }
 
         }
-        Log.d("PostLocation", String.valueOf(result));
-        Log.d("PostLocation","return");
+        Log.d("PostIsRunning", String.valueOf(result_whoIsRunning));
+        Log.d("PostIsRunning","return");
 
-        return result.toString();
-
+        return result_whoIsRunning.toString();
     }
 }
-

@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
@@ -49,17 +50,14 @@ import javax.net.ssl.HttpsURLConnection;
  */
 public class LocationUpdateService extends Service {
 
+
+    private String user_id;
+
     //dummy constructor
-    public LocationUpdateService(){}
-
-    private Context ctx;
-
-    //Only use for the get the context of the app for SharedPreferences
-    public LocationUpdateService(Context context){
+    public LocationUpdateService(){
         super();
-        this.ctx = context;
-    }
 
+    }
 
 
     @Override
@@ -94,21 +92,8 @@ public class LocationUpdateService extends Service {
             Log.d("LocationUpdateService", "getDeviceLocationForLocationService: " + currentLocation);
         } else {
             Log.d("LocationUpdateService", "getDeviceLocationForLocationService: null");
+            return;
         }
-
-        // to get LATER On the specific user location we need user id
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("UserInfo",MODE_PRIVATE);
-        String userID = sharedPreferences.getString("User_ID" ," NO ID");
-        String userName = sharedPreferences.getString("Name"," NO-NAME");
-        String userPhone = sharedPreferences.getString("PhoneNumber","NO-PHONE-NUMBER");
-
-        // validation check
-        Log.d("LocationUpdateService", "user id: " + userID);
-        Log.d("LocationUpdateService", "user name: " + userName);
-        Log.d("LocationUpdateService", "user phone: " + userPhone);
-
-
-        // TODO: change HTTP / HTTPS
 
         final JSONObject LocationUpdateServiceOnTheRun = new JSONObject();
         JSONObject inside_loc = new JSONObject();
@@ -118,9 +103,6 @@ public class LocationUpdateService extends Service {
         coordinates.put(currentLocation.getLongitude());  //long
         coordinates.put(currentLocation.getLatitude());  //lat
 
-        LocationUpdateServiceOnTheRun.put("user_name",userName);
-        LocationUpdateServiceOnTheRun.put("user_phone",userPhone);
-        LocationUpdateServiceOnTheRun.put("user_id",userID);
         LocationUpdateServiceOnTheRun.put("time", DateFormat.getDateTimeInstance().format(new Date()));
 
         Log.d("LocationUpdateService", "time in JSON:" +
@@ -157,7 +139,11 @@ public class LocationUpdateService extends Service {
         //TODO: note - change ip with ipcongig
         // String urlPath = "https://walkiii.herokuapp.com/api/locationStatus/" ;
 
-        String urlPath = "http://192.168.0.112:8080/api/locationStatus/"; //   192.168.56.1
+//        SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
+
+//        String phone = sharedPreferences.getString("PhoneNumber", "NO_PHONE");
+//        this.user_id = sharedPreferences.getString("uid" ,"NO_ID");
+        String update_user_location_url = Constants.SERVER_URL + Constants.LOC_STATUS_PATH + Constants.user_id;
 
 
         BufferedReader bufferedReader = null;
@@ -168,7 +154,7 @@ public class LocationUpdateService extends Service {
 
             // Open connection to the server
             // Open url for reading
-            URL url = new URL(urlPath);
+            URL url = new URL(update_user_location_url);
 
             //TODO: at final app - chang HTTP or HTTPS !!!!!!!!!!!!!!!!!!!!!
             HttpURLConnection urlConnection = null;
@@ -187,7 +173,8 @@ public class LocationUpdateService extends Service {
             //set time to be used when opening a communications link
             // to the resource referenced by this URLConnection connect to url
             urlConnection.setConnectTimeout(10000);
-            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestMethod("PUT");
+
             // enable output
             urlConnection.setDoOutput(true);
             //set header
@@ -197,7 +184,9 @@ public class LocationUpdateService extends Service {
                 urlConnection.connect();
             }
             catch(Exception e) {
-                Log.d("LocationUpdateService","Connect exception: " + e.toString());
+                Log.e("LocationUpdateService","Connect exception: " + e.toString());
+                e.printStackTrace();
+                return;
             }
             Log.d("LocationUpdateService","Connecting");
 
@@ -218,15 +207,8 @@ public class LocationUpdateService extends Service {
                 inputStream = urlConnection.getInputStream();
                 Log.d("LocationUpdateService", " urlConnection.getInputStream() : " + String.valueOf(urlConnection.getInputStream()));
             } catch (IOException ioe){
-                if ( urlConnection instanceof  HttpURLConnection){
-                    HttpURLConnection httpURLConnection = (HttpURLConnection) urlConnection;
-                    int statusCode = httpURLConnection.getResponseCode();
-                    Log.d("LocationUpdateService", " error code number: " + String.valueOf(statusCode));
-                    if (statusCode != 200){
-                        inputStream = httpURLConnection.getErrorStream();
-                        Log.d("LocationUpdateService", String.valueOf(inputStream));
-                    }
-                }
+                Log.e(this.getClass().toString(), "Error getting response from server");
+                ioe.printStackTrace();
             }
             //////////////////////////////////////////////////////////////////////////////
             Log.d("LocationUpdateService","connection OK");
