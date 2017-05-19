@@ -17,7 +17,7 @@ import java.util.Date;
 
 public class Splash extends AppCompatActivity {
     /** Duration of wait **/
-    private final int SPLASH_DISPLAY_LENGTH = 2000;
+    private final int SPLASH_DISPLAY_LENGTH = 3500;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +31,8 @@ public class Splash extends AppCompatActivity {
             public void run() {
                 /* Create an Intent that will start the Menu-Activity. */
 
-
                 SharedPreferences settings = getSharedPreferences("UserInfo", MODE_PRIVATE);
-
+                Constants.loadSharedPrefs(settings);
                 if(settings.contains("PhoneNumber"))
                 {
 
@@ -56,7 +55,6 @@ public class Splash extends AppCompatActivity {
                     Splash.this.startActivity(mainIntent);
                     Splash.this.finish();
                 }
-
             }
         }, SPLASH_DISPLAY_LENGTH);
 

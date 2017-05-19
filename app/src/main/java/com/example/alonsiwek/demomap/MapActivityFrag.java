@@ -48,7 +48,7 @@ public class MapActivityFrag extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView  = inflater.inflate(R.layout.activity_maps, null);
+        View rootView  = inflater.inflate(R.layout.activity_maps, null, false);
 
         mMapView = (MapView) rootView.findViewById(R.id.map);
         mMapView.onCreate(savedInstanceState);
