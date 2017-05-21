@@ -53,7 +53,7 @@ public class MainPageFrag extends Fragment {
 
 
         //TODO: decide of earse TOAST
-///////////////   part of toast //////////////////////////////
+        ///////////////   part of toast //////////////////////////////
 
         // Set a click listener for Fragment button
         btn_go.setOnClickListener(new View.OnClickListener() {
@@ -80,21 +80,29 @@ public class MainPageFrag extends Fragment {
 
                 ///////////////  END part of toast //////////////////////////////
 
-                mIsRunning = !mIsRunning;
+                ////////////// Part of UPDATE DB ////////////////////////////////
+                mIsRunning = true;
 
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try{
-                        updateRunningState(mIsRunning);
+                /* update DB only when mIsRunning == true.
+                 * update DB only when mIsRunning == false will be with FINISH button.
+                 */
+                Log.d(MainPageFrag.class.toString(),"mIsRunning:" +  String.valueOf(mIsRunning));
+                if (mIsRunning == true) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                updateRunningState(mIsRunning);
+                            } catch (IOException e) {
+                                Log.e(MainPageFrag.class.toString(), e.toString());
+                                e.printStackTrace();
+                                return;
+                            }
                         }
-                        catch (IOException e) {
-                            Log.e(MainPageFrag.class.toString(), e.toString());
-                            e.printStackTrace();
-                            return;
-                        }
-                    }
-                }).start();
+                    }).start();
+                }
+
+                ////////////// END of UPDATE DB ////////////////////////////////
             }
         });
 
