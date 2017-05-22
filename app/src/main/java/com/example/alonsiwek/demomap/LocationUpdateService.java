@@ -163,7 +163,7 @@ public class LocationUpdateService extends Service {
                 urlConnection = (HttpURLConnection) url.openConnection();
                 Log.d("LocationUpdateService" , String.valueOf(urlConnection));
             } catch ( IOException e){
-                Log.d("LocationUpdateService" , String.valueOf(e));
+                Log.e("LocationUpdateService" , String.valueOf(e));
             }
 
 
