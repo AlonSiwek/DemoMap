@@ -21,8 +21,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/main_screen_pager_title_streep"
             android:layout_gravity = "bottom"
-            android:background="#33b5e5"
-            android:textColor="#fff"
+            android:background="#89dcdf"
+            android:textColor="#ffffff"
             android:paddingBottom="4dp"
             android:paddingTop="4dp"/>
 
