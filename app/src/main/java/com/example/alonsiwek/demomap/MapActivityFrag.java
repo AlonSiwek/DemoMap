@@ -9,9 +9,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -32,7 +34,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.vision.barcode.Barcode;
 
+import java.io.IOException;
+
 import static android.R.attr.fragment;
+import static com.example.alonsiwek.demomap.MainPageFrag.updateRunningState;
 import static com.example.alonsiwek.demomap.R.id.map;
 
 /**
@@ -44,6 +49,8 @@ public class MapActivityFrag extends Fragment {
 
     MapView mMapView;
     private GoogleMap googleMap;
+
+    Boolean mIsRunning_atMAF;
 
 
     @Override
@@ -58,6 +65,7 @@ public class MapActivityFrag extends Fragment {
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
         } catch (Exception e) {
+            Log.e(MapActivityFrag.class.toString(),"error to display map: " + e.toString());
             e.printStackTrace();
         }
 
@@ -79,6 +87,39 @@ public class MapActivityFrag extends Fragment {
                     // For zooming automatically to my location
                     CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(myLat, myLong), 10);
                     mMap.animateCamera(cameraUpdate);
+                }
+            }
+        });
+
+        ImageButton finish = (ImageButton)rootView.findViewById(R.id.finish_btn);
+
+        ////////////// Part of UPDATE DB ////////////////////////////////
+
+        /* update DB only when mIsRunning_atMAF == false.
+         * update DB only when mIsRunning == true  will be with btn_go button.
+         */
+
+        finish.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                mIsRunning_atMAF = false;
+
+                Log.d("MapActivityFrag","mIsRunning_atMAF :" + mIsRunning_atMAF.toString());
+
+                if (mIsRunning_atMAF == false) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                MainPageFrag.updateRunningState(mIsRunning_atMAF);
+                            } catch (IOException e) {
+                                Log.e(MapActivityFrag.class.toString(), e.toString());
+                                e.printStackTrace();
+                                return;
+                            }
+                        }
+                    }).start();
                 }
             }
         });
