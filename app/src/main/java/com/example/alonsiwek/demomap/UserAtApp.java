@@ -3,6 +3,7 @@ package com.example.alonsiwek.demomap;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 
@@ -19,7 +20,7 @@ import java.net.URL;
 
 public class UserAtApp extends Service {
 
-    String mAllUsers_asString;
+    String mAllUsers_asString = null;
 
     public UserAtApp() {
         super();
@@ -50,6 +51,15 @@ public class UserAtApp extends Service {
              }
         });
         t.start();
+
+        // Pass the data string to MainPageFrag
+        if (mAllUsers_asString != null){
+            Intent in = new Intent();
+            in.putExtra("DATA_OF_USERS",mAllUsers_asString);
+            in.setAction("NOW");
+            //sendBroadcast(in);
+            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
+        }
     }
 
     /**
