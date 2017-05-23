@@ -3,10 +3,13 @@ package com.example.alonsiwek.demomap;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -36,6 +39,7 @@ import java.net.URL;
 public class MainPageFrag extends Fragment {
 
     Boolean mIsRunning = false;
+    String mdataOfUsers = null;
 
 
     @Override
@@ -53,6 +57,9 @@ public class MainPageFrag extends Fragment {
         AlarmManager alarm = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
         alarm.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 10*1000, pintent);
 
+        // Receive data from UserAtApp service
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(
+                broadcastReceiver, new IntentFilter("DATA_OF_USERS"));
 
         //TODO: decide of earse TOAST
         ///////////////   part of toast //////////////////////////////
@@ -172,10 +179,32 @@ public class MainPageFrag extends Fragment {
         urlConnection.disconnect();
     }
 
+    /**
+     * Recive the JSON string from UserAtApp servic, and update the class member : mDataOfUsers
+     */
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //get the type of message from the service
+            mdataOfUsers = intent.getStringExtra("DATA_OF_USERS");
+
+            Log.d("MainPageFrag","mdataOfUsers: " + mdataOfUsers.toString());
+
+        }
+    };
+
+
 
     @Override
     public void onResume(){
         super.onResume();
+        LocalBroadcastManager.getInstance(this.getContext())
+                .registerReceiver(broadcastReceiver, new IntentFilter("NOW"));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     @Override
