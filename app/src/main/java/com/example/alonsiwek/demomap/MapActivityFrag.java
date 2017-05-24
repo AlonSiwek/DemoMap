@@ -49,7 +49,6 @@ public class MapActivityFrag extends Fragment {
 
     MapView mMapView;
     private GoogleMap googleMap;
-
     Boolean mIsRunning_atMAF;
 
 
