@@ -15,10 +15,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:adjustViewBounds="false"
+        android:background="@drawable/gomassagebutton"
         android:cropToPadding="false"
-        android:elevation="0dp"
         android:onClick="go_toast"
         android:src="@drawable/center_logo_trns_edge"
-        android:background="@drawable/gomassagebutton"/>
+        android:layout_marginBottom="40dp"/>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/users_list"
+        android:layout_width="316dp"
+        android:layout_height="140dp" />
 
 </LinearLayout>

@@ -180,7 +180,7 @@ public class MainPageFrag extends Fragment {
     }
 
     /**
-     * Recive the JSON string from UserAtApp servic, and update the class member : mDataOfUsers
+     * Receive the JSON string from UserAtApp servic, and update the class member : mDataOfUsers
      */
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
