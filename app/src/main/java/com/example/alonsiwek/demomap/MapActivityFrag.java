@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -35,10 +36,14 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.vision.barcode.Barcode;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static android.R.attr.fragment;
 import static com.example.alonsiwek.demomap.MainPageFrag.updateRunningState;
 import static com.example.alonsiwek.demomap.R.id.map;
+import static com.example.alonsiwek.demomap.R.style.TwoWayView;
+import static com.example.alonsiwek.demomap.R.style;
+
 
 /**
  * Created by dor on 1/11/2017.
@@ -89,6 +94,7 @@ public class MapActivityFrag extends Fragment {
                 }
             }
         });
+
 
         ImageButton finish = (ImageButton)rootView.findViewById(R.id.finish_btn);
 

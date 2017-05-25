@@ -40,7 +40,10 @@ public class MainPageFrag extends Fragment {
 
     Boolean mIsRunning = false;
     String mdataOfUsers = null;
-
+    public String lat = null;
+    public String lng = null;
+    public String userName = null;
+    public String timeStamp = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
@@ -192,6 +195,8 @@ public class MainPageFrag extends Fragment {
 
         }
     };
+
+
 
 
 
