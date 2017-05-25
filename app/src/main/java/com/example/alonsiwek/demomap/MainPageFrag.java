@@ -10,6 +10,8 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,6 +33,8 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by dor on 1/11/2017.
@@ -40,12 +45,18 @@ public class MainPageFrag extends Fragment {
 
     Boolean mIsRunning = false;
     String mdataOfUsers = null;
+    RecyclerView mRecyvleView;
+    private AdapterUsers mAdapter;
+
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.main_screen_frag, null);
+        mRecyvleView = (RecyclerView) view.findViewById(R.id.users_list);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
+        mRecyvleView.setLayoutManager(layoutManager);
 
         // get the widgets reference from Fragment XML layout
         ImageButton btn_go = (ImageButton) view.findViewById(R.id.go_walking_btn);
@@ -60,6 +71,7 @@ public class MainPageFrag extends Fragment {
         // Receive data from UserAtApp service
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(
                 broadcastReceiver, new IntentFilter("DATA_OF_USERS"));
+
 
         //TODO: decide of earse TOAST
         ///////////////   part of toast //////////////////////////////
@@ -190,9 +202,64 @@ public class MainPageFrag extends Fragment {
 
             Log.d("MainPageFrag","mdataOfUsers: " + mdataOfUsers.toString());
 
+            if (mdataOfUsers != null) {
+                parser(mdataOfUsers);
+            }
+
         }
     };
 
+    /**
+     * parse the string from service, update objects and handover data to recyclerview
+     * @param result - the json string
+     */
+    protected void parser(String result){
+
+        Log.d("MainPageFrag","in parser and the josn string: " + "\n" + result.toString() );
+
+        List<UserData> data = new ArrayList<>();
+
+        try {
+            JSONArray jsonArray = new JSONArray(result);
+
+            // Extract data from json and store into ArrayList as class objects
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject_data = jsonArray.getJSONObject(i);
+                UserData userData = new UserData();
+                userData.user_name = jsonObject_data.getString("user_name");
+                userData.user_phone = jsonObject_data.getString("user_phone");
+                userData.user_id = jsonObject_data.getString("_id");
+                userData.isRunning = jsonObject_data.getBoolean("is_running");
+
+                // get the location
+                JSONObject get_loc = jsonObject_data.getJSONObject("loc");
+                JSONArray coor = get_loc.getJSONArray("coordinates");
+                userData.coordinates[0] = coor.getDouble(0);;
+                userData.coordinates[1] = coor.getDouble(1);
+
+                Log.d("MainPageFrag", "userData.user_name:  " + userData.user_name);
+                Log.d("MainPageFrag", "user_id:  " + userData.user_id);
+                Log.d("MainPageFrag", "userData.coordinate[0]" + userData.coordinates[0]);
+                Log.d("MainPageFrag", "userData.coordinate[1]" + userData.coordinates[1]);
+
+                data.add(userData);
+
+            }
+
+            // Setup and Handover data to recyclerview
+            mAdapter = new AdapterUsers(getActivity(),data);
+            mRecyvleView.setAdapter(mAdapter);
+            mRecyvleView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        }
+        catch (JSONException e){
+            Log.e("MainPageFrag","JSONException at parser:" + e.toString());
+            return;
+        }
+        catch (Exception e){
+            Log.e("MainPageFrag","Exception at parser:" + e.toString());
+            return;
+        }
+    }
 
 
     @Override
