@@ -10,4 +10,6 @@ public class UserData {
     String user_name; 
     String user_phone;
     String user_id;
+    double[] coordinates = new double[2];
+    Boolean isRunning;
 }

@@ -2,6 +2,7 @@ package com.example.alonsiwek.demomap;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import java.util.List;
 
 /**
  * Created by Dor on 24-May-17.
+ * Adapter to Recycle View - show the users that use the app
  */
 
 public class AdapterUsers extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
