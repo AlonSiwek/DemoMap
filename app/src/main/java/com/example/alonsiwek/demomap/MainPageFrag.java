@@ -61,34 +61,11 @@ public class MainPageFrag extends Fragment {
         new Timer().scheduleAtFixedRate(task,0,5000);
 
 
-//        mRecyvleView = (RecyclerView) view.findViewById(R.id.users_list);
-//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
-//        mRecyvleView.setLayoutManager(layoutManager);
-        /*
-
-        cont=getActivity();
-        new RecuperarComentarisFoto(cont, myFragmentView).execute();
-
-        */
-
         // get the widgets reference from Fragment XML layout
         ImageButton btn_go = (ImageButton) view.findViewById(R.id.go_walking_btn);
 
-        //TODO: change the time....
-        // call to service of GETTING the data from DB
-//        Intent intent = new Intent(getActivity(), UserAtApp.class);
-//        PendingIntent pintent = PendingIntent.getService(getActivity(), 0, intent, 0);
-//        AlarmManager alarm = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
-//        alarm.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 10*1000, pintent);
-//
-//        // Receive data from UserAtApp service
-//        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(
-//                broadcastReceiver, new IntentFilter("DATA_OF_USERS"));
 
-
-        //TODO: decide of earse TOAST
-        ///////////////   part of toast //////////////////////////////
-
+        // Toast of the Main button
         // Set a click listener for Fragment button
         btn_go.setOnClickListener(new View.OnClickListener() {
 
@@ -112,9 +89,8 @@ public class MainPageFrag extends Fragment {
                 toast.setView(layout);
                 toast.show();
 
-                ///////////////  END part of toast //////////////////////////////
 
-                ////////////// Part of UPDATE DB ////////////////////////////////
+                //  UPDATE DB
                 mIsRunning = true;
 
                 /* update DB only when mIsRunning == true.
@@ -135,8 +111,6 @@ public class MainPageFrag extends Fragment {
                         }
                     }).start();
                 }
-
-                ////////////// END of UPDATE DB ////////////////////////////////
             }
         });
 
