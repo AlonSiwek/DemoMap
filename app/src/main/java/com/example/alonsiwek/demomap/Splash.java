@@ -17,7 +17,7 @@ import java.util.Date;
 
 public class Splash extends AppCompatActivity {
     /** Duration of wait **/
-    private final int SPLASH_DISPLAY_LENGTH = 3500;
+    private final int SPLASH_DISPLAY_LENGTH = 1800;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,12 +36,11 @@ public class Splash extends AppCompatActivity {
                 if(settings.contains("PhoneNumber"))
                 {
 
-                    //TODO: change the time of the service
                     // call to service
                     Intent intent = new Intent(Splash.this, LocationUpdateService.class);
                     PendingIntent pintent = PendingIntent.getService(Splash.this, 0, intent, 0);
                     AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-                    alarm.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 5*1000, pintent);
+                    alarm.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 10*1000, pintent);
 
                     //sent intent to main screen. use by:  new Intent(Splash.this,MapsActivity.class);
                     Intent mainIntent = new Intent(Splash.this,MainScreen.PageAdapter.class);

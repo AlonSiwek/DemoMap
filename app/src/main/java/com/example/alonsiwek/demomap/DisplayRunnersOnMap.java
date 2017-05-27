@@ -2,7 +2,6 @@ package com.example.alonsiwek.demomap;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,6 +16,8 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
+
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by Dor on 27-May-17.
@@ -64,7 +65,6 @@ public class DisplayRunnersOnMap extends AsyncTask <Void,Void,String> {
             // Open url for reading
             URL url = new URL(get_all_users_url);
 
-            //TODO: at final app - chang HTTP or HTTPS !!!!!!!!!!!!!!!!!!!!!
             HttpURLConnection urlConnection = null;
 
             try {
@@ -139,9 +139,7 @@ public class DisplayRunnersOnMap extends AsyncTask <Void,Void,String> {
         if (result == null) {
             return;
         }
-
-        Parser.parseUsers(result);
-
+        // Adapt the Rec View
         RecyclerView mRecyleView = (RecyclerView) this.mView.findViewById(this.viewID);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.mContext);
         mRecyleView.setLayoutManager(layoutManager);

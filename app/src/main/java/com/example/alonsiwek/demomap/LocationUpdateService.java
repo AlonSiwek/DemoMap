@@ -135,14 +135,6 @@ public class LocationUpdateService extends Service {
      */
     void postDataToServer(JSONObject obj) throws IOException {
 
-        //TODO: change to final url
-        //TODO: note - change ip with ipcongig
-        // String urlPath = "https://walkiii.herokuapp.com/api/locationStatus/" ;
-
-//        SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
-
-//        String phone = sharedPreferences.getString("PhoneNumber", "NO_PHONE");
-//        this.user_id = sharedPreferences.getString("uid" ,"NO_ID");
         String update_user_location_url = Constants.SERVER_URL + Constants.LOC_STATUS_PATH + Constants.user_id;
 
 
@@ -156,7 +148,6 @@ public class LocationUpdateService extends Service {
             // Open url for reading
             URL url = new URL(update_user_location_url);
 
-            //TODO: at final app - chang HTTP or HTTPS !!!!!!!!!!!!!!!!!!!!!
             HttpURLConnection urlConnection = null;
 
             try {
