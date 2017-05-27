@@ -49,11 +49,14 @@ public class AdapterUsers extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         //TODO: 1) size , 2) image of user
     }
 
+
+
     // return total item from List
     @Override
     public int getItemCount() {
         return dataOfUsersList.size();
     }
+
 
     // create constructor to get widget reference
     class MyHolder extends RecyclerView.ViewHolder{

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,6 +31,7 @@ import java.io.IOException;
 
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -46,7 +48,8 @@ public class MainPageFrag extends Fragment {
     Boolean mIsRunning = false;
     String mdataOfUsers = null;
     RecyclerView mRecyvleView;
-    private AdapterUsers mAdapter;
+    AdapterUsers mAdapter;
+
 
 
 
@@ -216,8 +219,8 @@ public class MainPageFrag extends Fragment {
     protected void parser(String result){
 
         Log.d("MainPageFrag","in parser and the josn string: " + "\n" + result.toString() );
-
         List<UserData> data = new ArrayList<>();
+
 
         try {
             JSONArray jsonArray = new JSONArray(result);
@@ -250,6 +253,14 @@ public class MainPageFrag extends Fragment {
             mAdapter = new AdapterUsers(getActivity(),data);
             mRecyvleView.setAdapter(mAdapter);
             mRecyvleView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
+            /*
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("list", (Parcelable) data);
+            MainPageFrag mainPageFrag = new MainPageFrag();
+            mainPageFrag.setArguments(bundle);
+            */
         }
         catch (JSONException e){
             Log.e("MainPageFrag","JSONException at parser:" + e.toString());
@@ -259,6 +270,10 @@ public class MainPageFrag extends Fragment {
             Log.e("MainPageFrag","Exception at parser:" + e.toString());
             return;
         }
+    }
+
+    public AdapterUsers getmAdapter(){
+        return mAdapter;
     }
 
 
