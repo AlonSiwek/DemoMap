@@ -50,6 +50,7 @@ public class MainPageFrag extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.main_screen_frag, null);
 
+<<<<<<< HEAD
         // get the widgets reference from Fragment XML layout
         ImageButton btn_go = (ImageButton) view.findViewById(R.id.go_walking_btn);
 
@@ -66,7 +67,17 @@ public class MainPageFrag extends Fragment {
 
         //TODO: decide of earse TOAST
         ///////////////   part of toast //////////////////////////////
+=======
+        TimerTask task = new UserAtAppTimer(getActivity(), view, R.id.users_list);
+        new Timer().scheduleAtFixedRate(task,0,5000);
 
+
+        // get the widgets reference from Fragment XML layout
+        ImageButton btn_go = (ImageButton) view.findViewById(R.id.go_walking_btn);
+
+>>>>>>> 3d37c9333d0cc75f99b60b5f63cc150e251b585d
+
+        // Toast of the Main button
         // Set a click listener for Fragment button
         btn_go.setOnClickListener(new View.OnClickListener() {
 
@@ -90,9 +101,8 @@ public class MainPageFrag extends Fragment {
                 toast.setView(layout);
                 toast.show();
 
-                ///////////////  END part of toast //////////////////////////////
 
-                ////////////// Part of UPDATE DB ////////////////////////////////
+                //  UPDATE DB
                 mIsRunning = true;
 
                 /* update DB only when mIsRunning == true.
@@ -113,8 +123,6 @@ public class MainPageFrag extends Fragment {
                         }
                     }).start();
                 }
-
-                ////////////// END of UPDATE DB ////////////////////////////////
             }
         });
 

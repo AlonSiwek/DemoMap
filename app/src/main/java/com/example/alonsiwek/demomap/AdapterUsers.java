@@ -46,7 +46,6 @@ public class AdapterUsers extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         UserData current = dataOfUsersList.get(position);
         myHolder.textUserName.setText(current.user_name);
 
-        //TODO: 1) size , 2) image of user
     }
 
 
@@ -54,7 +53,7 @@ public class AdapterUsers extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     // return total item from List
     @Override
     public int getItemCount() {
-        return dataOfUsersList.size();
+            return dataOfUsersList.size();
     }
 
 

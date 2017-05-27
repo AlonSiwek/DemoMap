@@ -73,7 +73,6 @@ public class UserAtApp extends AsyncTask<Void,Void,String> {
             // Open url for reading
             URL url = new URL(get_all_users_url);
 
-            //TODO: at final app - chang HTTP or HTTPS !!!!!!!!!!!!!!!!!!!!!
             HttpURLConnection urlConnection = null;
 
             try {

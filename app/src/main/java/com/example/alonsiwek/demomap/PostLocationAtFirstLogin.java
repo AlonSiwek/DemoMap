@@ -54,12 +54,9 @@ public class PostLocationAtFirstLogin extends AsyncTask<JSONObject,String,String
 
     @Override
     final protected String doInBackground(JSONObject... params) {
-        // TODO: change to the final url
-        //TODO: note - change ip with ipcongig
-        // TODO: change HTTP / HTTPS
 
         try {
-            //String url_path = "https://walkiii.herokuapp.com/api/locationStatus/";
+
             String url_path = Constants.SERVER_URL + Constants.LOC_STATUS_PATH; //  192.168.56.1
             return postData(url_path);
         } catch (IOException ex){
