@@ -2,67 +2,58 @@ package com.example.alonsiwek.demomap;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
-public class UserAtApp extends AsyncTask<Void,Void,String> {
+/**
+ * Created by Dor on 27-May-17.
+ */
 
-    String mAllUsers_asString = null;
-    RecyclerView showUserData;
-    Context mCtx;
+public class DisplayRunnersOnMap extends AsyncTask <Void,Void,String> {
+
+    Context mContext;
     View mView;
-    int viewId;
-    private List<UserData> data;
+    int viewID;
 
-    public UserAtApp()
-    {
+    DisplayRunnersOnMap() {}
 
+    DisplayRunnersOnMap(Context context,View view, int viewID){
+        this.mContext = context;
+        this.mView = view;
+        this.viewID = viewID;
     }
 
-    public UserAtApp(Context c, View v, int view_id)
-    {
-        this.mView = v;
-        this.mCtx = c;
-        this.viewId = view_id;
-    }
 
     @Override
     protected String doInBackground(Void... params) {
-        String users = getAllUser();
-        if (users == null){
+
+        String isNull = getAllRunners();
+        if (isNull == null){
             Log.e(this.getClass().toString(),  "Error fetching users");
             return null;
         }
 
-        return users;
+        return isNull;
     }
 
-    /**
-     * the GET method
-     * return - a string with all the users
-     */
-    String getAllUser () {
-        String get_all_users_url = Constants.SERVER_URL + Constants.LOC_STATUS_PATH;
+    String getAllRunners (){
+
+        String IS_RUNNING = "?is_running=true";
+
+        String get_all_users_url = Constants.SERVER_URL + Constants.LOC_STATUS_PATH + IS_RUNNING;
 
 
         BufferedReader bufferedReader = null;
@@ -128,15 +119,15 @@ public class UserAtApp extends AsyncTask<Void,Void,String> {
             // disconnect
             urlConnection.disconnect();
         } catch (ProtocolException e) {
-            Log.e("UsersAtApp", e.toString());
+            Log.e("DisplayRunnersOnMap", e.toString());
             e.printStackTrace();
             return null;
         } catch (MalformedURLException e) {
-            Log.e("UsersAtApp", e.toString());
+            Log.e("DisplayRunnersOnMap", e.toString());
             e.printStackTrace();
             return null;
         } catch (IOException e) {
-            Log.e("UsersAtApp", e.toString());
+            Log.e("DisplayRunnersOnMap", e.toString());
             e.printStackTrace();
             return null;
         }
@@ -144,25 +135,25 @@ public class UserAtApp extends AsyncTask<Void,Void,String> {
         return String.valueOf(result);
     }
 
-
-    protected void onPostExecute(String result){
-        if(result == null)
-        {
+    protected void onPostExecute(String result) {
+        if (result == null) {
             return;
         }
 
+        Parser.parseUsers(result);
 
-        RecyclerView mRecyleView = (RecyclerView) this.mView.findViewById(this.viewId);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.mCtx);
+        RecyclerView mRecyleView = (RecyclerView) this.mView.findViewById(this.viewID);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.mContext);
         mRecyleView.setLayoutManager(layoutManager);
 
-        Log.d("UserAtApp","in parser and the josn string: " + "\n" + result.toString() );
+        Log.d("DisplayRunnersOnMap","in parser and the josn string: " + "\n" + result.toString() );
         try {
             ArrayList<UserData> data = Parser.parseUsers(result);
             // Setup and Handover data to recyclerview
-            AdapterUsers mAdapter = new AdapterUsers(mCtx, data);
+            AdapterUsers mAdapter = new AdapterUsers(mContext, data);
             mRecyleView.setAdapter(mAdapter);
-            mRecyleView.setLayoutManager(new LinearLayoutManager(this.mCtx));
+            mRecyleView.setLayoutManager
+                    (new LinearLayoutManager(this.mContext , LinearLayoutManager.HORIZONTAL , false));
             mAdapter.notifyDataSetChanged();
         }
 
@@ -170,6 +161,10 @@ public class UserAtApp extends AsyncTask<Void,Void,String> {
             Log.e("UserAtApp","Exception at parser:" + e.toString());
             return;
         }
+
     }
+
+
+
 
 }

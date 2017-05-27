@@ -43,5 +43,15 @@
         android:layout_height="match_parent" />
 
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/runners_list"
+        android:layout_width="316dp"
+        android:layout_height="80dp"
+        android:paddingTop="15dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
+
+
 
 </RelativeLayout>

@@ -43,6 +43,7 @@ import java.util.List;
 
 import static android.R.attr.fragment;
 import static com.example.alonsiwek.demomap.MainPageFrag.updateRunningState;
+import static com.example.alonsiwek.demomap.R.id.login_btn;
 import static com.example.alonsiwek.demomap.R.id.map;
 
 /**
@@ -87,6 +88,10 @@ public class MapActivityFrag extends Fragment {
                 if (location != null) {
                     double myLat = location.getLatitude();
                     double myLong = location.getLongitude();
+
+                    Log.d("MapActivityFrag","lat: " + myLat);
+                    Log.d("MapActivityFrag","long: " + myLong);
+
                     // For zooming automatically to my location
                     CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(myLat, myLong), 10);
                     mMap.animateCamera(cameraUpdate);
@@ -145,12 +150,16 @@ public class MapActivityFrag extends Fragment {
             }
         });
 
+<<<<<<< HEAD
         Bundle bundle = this.getArguments();
         if (bundle != null){
             list = bundle.getParcelable("list");
             Log.d("MapFrag","list:" + list.get(0).user_name);
         }
 
+=======
+        new DisplayRunnersOnMap(getActivity(),rootView,R.id.runners_list).execute();
+>>>>>>> 7b034d8e536e9c98156aed51f9d390c108795988
 
         return rootView;
     }

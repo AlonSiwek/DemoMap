@@ -37,6 +37,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by dor on 1/11/2017.
@@ -57,23 +59,34 @@ public class MainPageFrag extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.main_screen_frag, null);
-        mRecyvleView = (RecyclerView) view.findViewById(R.id.users_list);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
-        mRecyvleView.setLayoutManager(layoutManager);
+
+        TimerTask task = new UserAtAppTimer(getActivity(), view, R.id.users_list);
+        new Timer().scheduleAtFixedRate(task,0,5000);
+
+
+//        mRecyvleView = (RecyclerView) view.findViewById(R.id.users_list);
+//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
+//        mRecyvleView.setLayoutManager(layoutManager);
+        /*
+
+        cont=getActivity();
+        new RecuperarComentarisFoto(cont, myFragmentView).execute();
+
+        */
 
         // get the widgets reference from Fragment XML layout
         ImageButton btn_go = (ImageButton) view.findViewById(R.id.go_walking_btn);
 
         //TODO: change the time....
         // call to service of GETTING the data from DB
-        Intent intent = new Intent(getActivity(), UserAtApp.class);
-        PendingIntent pintent = PendingIntent.getService(getActivity(), 0, intent, 0);
-        AlarmManager alarm = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
-        alarm.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 10*1000, pintent);
-
-        // Receive data from UserAtApp service
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(
-                broadcastReceiver, new IntentFilter("DATA_OF_USERS"));
+//        Intent intent = new Intent(getActivity(), UserAtApp.class);
+//        PendingIntent pintent = PendingIntent.getService(getActivity(), 0, intent, 0);
+//        AlarmManager alarm = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
+//        alarm.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 10*1000, pintent);
+//
+//        // Receive data from UserAtApp service
+//        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(
+//                broadcastReceiver, new IntentFilter("DATA_OF_USERS"));
 
 
         //TODO: decide of earse TOAST
@@ -194,6 +207,7 @@ public class MainPageFrag extends Fragment {
         urlConnection.disconnect();
     }
 
+<<<<<<< HEAD
     /**
      * Receive the JSON string from UserAtApp servic, and update the class member : mDataOfUsers
      */
@@ -271,6 +285,8 @@ public class MainPageFrag extends Fragment {
             return;
         }
     }
+=======
+>>>>>>> 7b034d8e536e9c98156aed51f9d390c108795988
 
     public AdapterUsers getmAdapter(){
         return mAdapter;
@@ -280,8 +296,6 @@ public class MainPageFrag extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-        LocalBroadcastManager.getInstance(this.getContext())
-                .registerReceiver(broadcastReceiver, new IntentFilter("NOW"));
     }
 
     @Override
