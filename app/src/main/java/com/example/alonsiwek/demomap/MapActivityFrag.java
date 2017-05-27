@@ -38,6 +38,7 @@ import java.io.IOException;
 
 import static android.R.attr.fragment;
 import static com.example.alonsiwek.demomap.MainPageFrag.updateRunningState;
+import static com.example.alonsiwek.demomap.R.id.login_btn;
 import static com.example.alonsiwek.demomap.R.id.map;
 
 /**
@@ -83,6 +84,10 @@ public class MapActivityFrag extends Fragment {
                 if (location != null) {
                     double myLat = location.getLatitude();
                     double myLong = location.getLongitude();
+
+                    Log.d("MapActivityFrag","lat: " + myLat);
+                    Log.d("MapActivityFrag","long: " + myLong);
+
                     // For zooming automatically to my location
                     CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(myLat, myLong), 10);
                     mMap.animateCamera(cameraUpdate);
@@ -122,6 +127,8 @@ public class MapActivityFrag extends Fragment {
                 }
             }
         });
+
+        new DisplayRunnersOnMap(getActivity(),rootView,R.id.runners_list).execute();
 
         return rootView;
     }

@@ -91,10 +91,7 @@
             android:name=".LocationUpdateService"
             android:enabled="true"
             android:exported="true" />
-        <service
-            android:name=".UserAtApp"
-            android:enabled="true"
-            android:exported="true"></service>
+
     </application>
 
 </manifest>

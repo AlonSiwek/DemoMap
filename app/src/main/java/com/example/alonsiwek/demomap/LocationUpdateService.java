@@ -208,6 +208,8 @@ public class LocationUpdateService extends Service {
                 Log.d("LocationUpdateService", " urlConnection.getInputStream() : " + String.valueOf(urlConnection.getInputStream()));
             } catch (IOException ioe){
                 Log.e(this.getClass().toString(), "Error getting response from server");
+                inputStream = urlConnection.getErrorStream();
+                Log.e("LocationUpdateService","urlConnection.getErrorStream() : " +  String.valueOf(urlConnection.getErrorStream()));
                 ioe.printStackTrace();
             }
             //////////////////////////////////////////////////////////////////////////////
