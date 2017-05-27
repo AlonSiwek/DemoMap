@@ -35,6 +35,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by dor on 1/11/2017.
@@ -54,23 +56,34 @@ public class MainPageFrag extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.main_screen_frag, null);
-        mRecyvleView = (RecyclerView) view.findViewById(R.id.users_list);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
-        mRecyvleView.setLayoutManager(layoutManager);
+
+        TimerTask task = new UserAtAppTimer(getActivity(), view, R.id.users_list);
+        new Timer().scheduleAtFixedRate(task,0,5000);
+
+
+//        mRecyvleView = (RecyclerView) view.findViewById(R.id.users_list);
+//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
+//        mRecyvleView.setLayoutManager(layoutManager);
+        /*
+
+        cont=getActivity();
+        new RecuperarComentarisFoto(cont, myFragmentView).execute();
+
+        */
 
         // get the widgets reference from Fragment XML layout
         ImageButton btn_go = (ImageButton) view.findViewById(R.id.go_walking_btn);
 
         //TODO: change the time....
         // call to service of GETTING the data from DB
-        Intent intent = new Intent(getActivity(), UserAtApp.class);
-        PendingIntent pintent = PendingIntent.getService(getActivity(), 0, intent, 0);
-        AlarmManager alarm = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
-        alarm.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 10*1000, pintent);
-
-        // Receive data from UserAtApp service
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(
-                broadcastReceiver, new IntentFilter("DATA_OF_USERS"));
+//        Intent intent = new Intent(getActivity(), UserAtApp.class);
+//        PendingIntent pintent = PendingIntent.getService(getActivity(), 0, intent, 0);
+//        AlarmManager alarm = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
+//        alarm.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 10*1000, pintent);
+//
+//        // Receive data from UserAtApp service
+//        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(
+//                broadcastReceiver, new IntentFilter("DATA_OF_USERS"));
 
 
         //TODO: decide of earse TOAST
@@ -191,82 +204,11 @@ public class MainPageFrag extends Fragment {
         urlConnection.disconnect();
     }
 
-    /**
-     * Receive the JSON string from UserAtApp servic, and update the class member : mDataOfUsers
-     */
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            //get the type of message from the service
-            mdataOfUsers = intent.getStringExtra("DATA_OF_USERS");
-
-            Log.d("MainPageFrag","mdataOfUsers: " + mdataOfUsers.toString());
-
-            if (mdataOfUsers != null) {
-                parser(mdataOfUsers);
-            }
-
-        }
-    };
-
-    /**
-     * parse the string from service, update objects and handover data to recyclerview
-     * @param result - the json string
-     */
-    protected void parser(String result){
-
-        Log.d("MainPageFrag","in parser and the josn string: " + "\n" + result.toString() );
-
-        List<UserData> data = new ArrayList<>();
-
-        try {
-            JSONArray jsonArray = new JSONArray(result);
-
-            // Extract data from json and store into ArrayList as class objects
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObject_data = jsonArray.getJSONObject(i);
-                UserData userData = new UserData();
-                userData.user_name = jsonObject_data.getString("user_name");
-                userData.user_phone = jsonObject_data.getString("user_phone");
-                userData.user_id = jsonObject_data.getString("_id");
-                userData.isRunning = jsonObject_data.getBoolean("is_running");
-
-                // get the location
-                JSONObject get_loc = jsonObject_data.getJSONObject("loc");
-                JSONArray coor = get_loc.getJSONArray("coordinates");
-                userData.coordinates[0] = coor.getDouble(0);;
-                userData.coordinates[1] = coor.getDouble(1);
-
-                Log.d("MainPageFrag", "userData.user_name:  " + userData.user_name);
-                Log.d("MainPageFrag", "user_id:  " + userData.user_id);
-                Log.d("MainPageFrag", "userData.coordinate[0]" + userData.coordinates[0]);
-                Log.d("MainPageFrag", "userData.coordinate[1]" + userData.coordinates[1]);
-
-                data.add(userData);
-
-            }
-
-            // Setup and Handover data to recyclerview
-            mAdapter = new AdapterUsers(getActivity(),data);
-            mRecyvleView.setAdapter(mAdapter);
-            mRecyvleView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        }
-        catch (JSONException e){
-            Log.e("MainPageFrag","JSONException at parser:" + e.toString());
-            return;
-        }
-        catch (Exception e){
-            Log.e("MainPageFrag","Exception at parser:" + e.toString());
-            return;
-        }
-    }
 
 
     @Override
     public void onResume(){
         super.onResume();
-        LocalBroadcastManager.getInstance(this.getContext())
-                .registerReceiver(broadcastReceiver, new IntentFilter("NOW"));
     }
 
     @Override
