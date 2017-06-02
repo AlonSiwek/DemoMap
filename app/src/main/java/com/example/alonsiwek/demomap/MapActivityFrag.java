@@ -89,8 +89,12 @@ public class MapActivityFrag extends Fragment {
                     Log.d("MapActivityFrag","long: " + myLong);
 
                     // For zooming automatically to my location
-                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(myLat, myLong), 10);
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(myLat, myLong), 5);
                     mMap.animateCamera(cameraUpdate);
+                }
+                // location == null -> ask the user to active google location
+                else {
+
                 }
             }
         });
