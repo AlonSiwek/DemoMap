@@ -215,7 +215,7 @@ public class Splash extends AppCompatActivity{
                    Intent intent = new Intent(Splash.this, LocationUpdateService.class);
                    PendingIntent pintent = PendingIntent.getService(Splash.this, 0, intent, 0);
                    AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                   alarm.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 10 * 1000, pintent);
+                   alarm.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 15 * 1000, pintent);
 
 
                    //sent intent to main screen. use by:  new Intent(Splash.this,MapsActivity.class);
