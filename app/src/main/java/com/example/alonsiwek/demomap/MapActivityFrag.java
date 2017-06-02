@@ -81,6 +81,8 @@ public class MapActivityFrag extends Fragment {
                 LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
                 Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(new Criteria(), false));
 
+                Log.d("MapActivityFrag","location is: " + location.toString());
+
                 if (location != null) {
                     double myLat = location.getLatitude();
                     double myLong = location.getLongitude();
@@ -91,10 +93,6 @@ public class MapActivityFrag extends Fragment {
                     // For zooming automatically to my location
                     CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(myLat, myLong), 5);
                     mMap.animateCamera(cameraUpdate);
-                }
-                // location == null -> ask the user to active google location
-                else {
-
                 }
             }
         });
