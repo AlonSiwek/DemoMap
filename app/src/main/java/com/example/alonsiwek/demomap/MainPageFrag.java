@@ -46,9 +46,8 @@ import java.util.TimerTask;
 public class MainPageFrag extends Fragment {
 
     Boolean mIsRunning = false;
-    String mdataOfUsers = null;
-    RecyclerView mRecyvleView;
-    private AdapterUsers mAdapter;
+
+    private static final int UPDATE_RECYCLE_VIEW_DURATION = 5000;
 
 
 
@@ -58,7 +57,7 @@ public class MainPageFrag extends Fragment {
         View view = inflater.inflate(R.layout.main_screen_frag, null);
 
         TimerTask task = new UserAtAppTimer(getActivity(), view, R.id.users_list);
-        new Timer().scheduleAtFixedRate(task,0,5000);
+        new Timer().scheduleAtFixedRate(task,0,UPDATE_RECYCLE_VIEW_DURATION);
 
 
         // get the widgets reference from Fragment XML layout
@@ -97,7 +96,7 @@ public class MainPageFrag extends Fragment {
                  * update DB only when mIsRunning == false will be with FINISH button.
                  */
                 Log.d(MainPageFrag.class.toString(),"mIsRunning:" +  String.valueOf(mIsRunning));
-                if (mIsRunning == true) {
+                if (mIsRunning) {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -117,6 +116,11 @@ public class MainPageFrag extends Fragment {
         return view;
     }
 
+    /**
+     * Update the DB with the boolean state field of "is_running"
+     * @param state - true or flase
+     * @throws IOException
+     */
     static void updateRunningState(Boolean state) throws IOException {
 
         JSONObject json = new JSONObject();
@@ -177,8 +181,6 @@ public class MainPageFrag extends Fragment {
         // disconnect
         urlConnection.disconnect();
     }
-
-
 
     @Override
     public void onResume(){

@@ -2,6 +2,7 @@ package com.example.alonsiwek.demomap;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -145,15 +146,25 @@ public class UserAtApp extends AsyncTask<Void,Void,String> {
 
 
     protected void onPostExecute(String result){
-        if(result == null)
-        {
+        if(result == null) {
             return;
         }
 
-
+        // get the recycle view
         RecyclerView mRecyleView = (RecyclerView) this.mView.findViewById(this.viewId);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.mCtx);
-        mRecyleView.setLayoutManager(layoutManager);
+
+        // return the layout
+        RecyclerView.LayoutManager layout = mRecyleView.getLayoutManager();
+
+        // case of null - layout did not create yet -> set it up
+        if (layout == null) {
+            layout = new LinearLayoutManager(this.mCtx);
+            mRecyleView.setLayoutManager(layout);
+        }
+
+        // get the layout state and save it to prevent jumps at the updates
+        Parcelable recyclerViewState;
+        recyclerViewState = mRecyleView.getLayoutManager().onSaveInstanceState();
 
         Log.d("UserAtApp","in parser and the josn string: " + "\n" + result.toString() );
         try {
@@ -161,8 +172,9 @@ public class UserAtApp extends AsyncTask<Void,Void,String> {
             // Setup and Handover data to recyclerview
             AdapterUsers mAdapter = new AdapterUsers(mCtx, data);
             mRecyleView.setAdapter(mAdapter);
-            mRecyleView.setLayoutManager(new LinearLayoutManager(this.mCtx));
             mAdapter.notifyDataSetChanged();
+            mRecyleView.getLayoutManager().onRestoreInstanceState(recyclerViewState);
+
         }
 
         catch (Exception e){
