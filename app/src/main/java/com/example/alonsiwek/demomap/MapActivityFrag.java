@@ -33,7 +33,7 @@ public class MapActivityFrag extends Fragment {
     private GoogleMap googleMap;
     Boolean mIsRunning_atMAF;
 
-    private static int MAP_ZOOM_RATE = 30;
+    private static int MAP_ZOOM_RATE = 15;
 
 
     @Override

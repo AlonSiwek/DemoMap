@@ -5,7 +5,7 @@
     android:weightSum="1"
     android:background="@drawable/background">
 
-    <ImageButton
+    <ImageView
         android:id="@+id/imageButton"
         android:layout_width="181dp"
         android:layout_height="57dp"
