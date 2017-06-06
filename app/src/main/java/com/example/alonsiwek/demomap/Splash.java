@@ -38,7 +38,7 @@ import java.util.Set;
 public class Splash extends AppCompatActivity{
 
     /** Duration of wait - splash screen **/
-    private final int SPLASH_DISPLAY_LENGTH = 1500;
+    private final int SPLASH_DISPLAY_LENGTH = 1100;
 
     private final int TOAST_DISPLAY_LENGTH = Toast.LENGTH_LONG;
 

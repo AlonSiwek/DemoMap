@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_screen_frag_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:weightSum="1"
     android:background="@drawable/background">
 
 
@@ -19,22 +18,47 @@
         android:cropToPadding="false"
         android:onClick="go_toast"
         android:src="@drawable/center_logo_trns_edge"
-        android:layout_marginBottom="40dp"/>
+        tools:padding="2dp"
+        android:layout_above="@+id/your_friends_tv"
+        android:layout_centerHorizontal="true" />
 
-    <TextView
+    <ImageView
+        android:id="@+id/left_arrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:src="@drawable/arro_left_hd"
+        android:layout_alignBottom="@+id/right_arrow"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:id="@+id/right_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/arrow_right_hd"
+        android:layout_marginBottom="109dp"
+        android:layout_alignBottom="@+id/go_walking_btn"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/your_friends_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/users_list"
+        android:layout_centerHorizontal="true"
         android:text="Your friends:"
-        android:textStyle="italic"
-        android:textSize="26dp"
         android:textColor="@android:color/black"
-        />
+        android:textSize="26sp"
+        android:textStyle="italic"
+        android:layout_marginTop="8dp"
+        android:layout_margin="8dp"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/users_list"
         android:layout_width="316dp"
         android:layout_height="140dp"
         android:paddingTop="15dp"
-        android:layout_marginBottom="15dp"/>
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
-</LinearLayout>
+</RelativeLayout>

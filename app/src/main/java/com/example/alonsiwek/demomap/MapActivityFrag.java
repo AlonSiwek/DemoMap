@@ -33,7 +33,7 @@ public class MapActivityFrag extends Fragment {
     private GoogleMap googleMap;
     Boolean mIsRunning_atMAF;
 
-    private static int MAP_ZOOM_RATE = 30;
+    private static int MAP_ZOOM_RATE = 15;
 
 
     @Override
@@ -64,7 +64,6 @@ public class MapActivityFrag extends Fragment {
                 LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
                 Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(new Criteria(), false));
 
-                Log.d("MapActivityFrag","location is: " + location.toString());
 
                 if (location != null) {
                     double myLat = location.getLatitude();
@@ -76,6 +75,9 @@ public class MapActivityFrag extends Fragment {
                     // For zooming automatically to my location
                     CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(myLat, myLong), MAP_ZOOM_RATE);
                     mMap.animateCamera(cameraUpdate);
+                }
+                else{
+                    Log.d("MapActivityFrag","location is: NULL ");
                 }
             }
         });
