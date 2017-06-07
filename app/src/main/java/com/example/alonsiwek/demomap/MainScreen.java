@@ -54,7 +54,7 @@ public class MainScreen extends AppCompatActivity {
         * Identifier for the third fragment.
         * contact
         */
-        public static final int FRAGMENT_THREE_CONTACATS = 2;
+        //public static final int FRAGMENT_THREE_MENU = 2;
 
         /*
         * Identifier for the second fragment.
@@ -102,6 +102,7 @@ public class MainScreen extends AppCompatActivity {
             // Create fragments.
             listFragments.add(FRAGMENT_ONE_MAINSCREEN, new MainPageFrag());
             listFragments.add(FRAGMENT_TWO_MAP, new MapActivityFrag());
+            //listFragments.add(FRAGMENT_THREE_MENU, null);
 
             /*
              * Setup the fragments, defining the number of fragments, the screens and title
@@ -126,6 +127,8 @@ public class MainScreen extends AppCompatActivity {
                             return "Main Screen";
                         case FRAGMENT_TWO_MAP:
                             return "Map";
+//                        case FRAGMENT_THREE_MENU:
+//                            return "Menu";
                         default:
                             return null;
                     }

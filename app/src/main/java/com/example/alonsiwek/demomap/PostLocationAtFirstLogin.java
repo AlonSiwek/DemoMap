@@ -101,7 +101,7 @@ public class PostLocationAtFirstLogin extends AsyncTask<JSONObject,String,String
             URL url = new URL(urlPath);
             HttpURLConnection urlConnection = null;
 
-           // try to connect the url
+            // try to connect the url
             try {
                 urlConnection = (HttpURLConnection) url.openConnection();
                 Log.d("PostLocationFirstLogin" , String.valueOf(urlConnection));
@@ -182,4 +182,3 @@ public class PostLocationAtFirstLogin extends AsyncTask<JSONObject,String,String
 
     }
 }
-

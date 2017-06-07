@@ -48,12 +48,10 @@ public class AdapterUsers extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     }
 
-
-
     // return total item from List
     @Override
     public int getItemCount() {
-            return dataOfUsersList.size();
+        return dataOfUsersList.size();
     }
 
 
@@ -68,5 +66,9 @@ public class AdapterUsers extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             super(itemView);
             textUserName = (TextView) itemView.findViewById(R.id.user_name_at_contiener);
         }
+    }
+
+    public List getList(){
+        return this.dataOfUsersList;
     }
 }

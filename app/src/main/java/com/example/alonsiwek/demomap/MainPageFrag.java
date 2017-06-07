@@ -10,6 +10,8 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,6 +33,10 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by dor on 1/11/2017.
@@ -40,34 +47,16 @@ public class MainPageFrag extends Fragment {
 
     Boolean mIsRunning = false;
     String mdataOfUsers = null;
-    public String lat = null;
-    public String lng = null;
-    public String userName = null;
-    public String timeStamp = null;
+    RecyclerView mRecyvleView;
+    private AdapterUsers mAdapter;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.main_screen_frag, null);
 
-<<<<<<< HEAD
-        // get the widgets reference from Fragment XML layout
-        ImageButton btn_go = (ImageButton) view.findViewById(R.id.go_walking_btn);
-
-        //TODO: change the time....
-        // call to service of GETTING the data from DB
-        Intent intent = new Intent(getActivity(), UserAtApp.class);
-        PendingIntent pintent = PendingIntent.getService(getActivity(), 0, intent, 0);
-        AlarmManager alarm = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
-        alarm.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 10*1000, pintent);
-
-        // Receive data from UserAtApp service
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(
-                broadcastReceiver, new IntentFilter("DATA_OF_USERS"));
-
-        //TODO: decide of earse TOAST
-        ///////////////   part of toast //////////////////////////////
-=======
         TimerTask task = new UserAtAppTimer(getActivity(), view, R.id.users_list);
         new Timer().scheduleAtFixedRate(task,0,5000);
 
@@ -75,7 +64,6 @@ public class MainPageFrag extends Fragment {
         // get the widgets reference from Fragment XML layout
         ImageButton btn_go = (ImageButton) view.findViewById(R.id.go_walking_btn);
 
->>>>>>> 3d37c9333d0cc75f99b60b5f63cc150e251b585d
 
         // Toast of the Main button
         // Set a click listener for Fragment button
@@ -145,7 +133,7 @@ public class MainPageFrag extends Fragment {
         }
 
         try {
-           url = new URL(Constants.SERVER_URL + Constants.LOC_STATUS_PATH + Constants.user_id);
+            url = new URL(Constants.SERVER_URL + Constants.LOC_STATUS_PATH + Constants.user_id);
         } catch (MalformedURLException e) {
             Log.e(MainPageFrag.class.toString(), "error at url: "  + e.toString());
             e.printStackTrace();
@@ -190,29 +178,11 @@ public class MainPageFrag extends Fragment {
         urlConnection.disconnect();
     }
 
-    /**
-     * Receive the JSON string from UserAtApp servic, and update the class member : mDataOfUsers
-     */
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            //get the type of message from the service
-            mdataOfUsers = intent.getStringExtra("DATA_OF_USERS");
-
-            Log.d("MainPageFrag","mdataOfUsers: " + mdataOfUsers.toString());
-
-        }
-    };
-
-
-
 
 
     @Override
     public void onResume(){
         super.onResume();
-        LocalBroadcastManager.getInstance(this.getContext())
-                .registerReceiver(broadcastReceiver, new IntentFilter("NOW"));
     }
 
     @Override
@@ -230,6 +200,3 @@ public class MainPageFrag extends Fragment {
         super.onDestroy();
     }
 }
-
-
-

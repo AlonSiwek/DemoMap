@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -37,13 +36,13 @@ import com.google.android.gms.vision.barcode.Barcode;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static android.R.attr.fragment;
 import static com.example.alonsiwek.demomap.MainPageFrag.updateRunningState;
+import static com.example.alonsiwek.demomap.R.id.login_btn;
 import static com.example.alonsiwek.demomap.R.id.map;
-import static com.example.alonsiwek.demomap.R.style.TwoWayView;
-import static com.example.alonsiwek.demomap.R.style;
-
 
 /**
  * Created by dor on 1/11/2017.
@@ -60,6 +59,10 @@ public class MapActivityFrag extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView  = inflater.inflate(R.layout.activity_maps, null, false);
+//
+//        TimerTask task = new UserAtAppTimer(getActivity(), rootView, R.id.map);
+//        new Timer().scheduleAtFixedRate(task,0,5000);
+//
 
         mMapView = (MapView) rootView.findViewById(R.id.map);
         mMapView.onCreate(savedInstanceState);
@@ -88,13 +91,16 @@ public class MapActivityFrag extends Fragment {
                 if (location != null) {
                     double myLat = location.getLatitude();
                     double myLong = location.getLongitude();
+
+                    Log.d("MapActivityFrag","lat: " + myLat);
+                    Log.d("MapActivityFrag","long: " + myLong);
+
                     // For zooming automatically to my location
                     CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(myLat, myLong), 10);
                     mMap.animateCamera(cameraUpdate);
                 }
             }
         });
-
 
         ImageButton finish = (ImageButton)rootView.findViewById(R.id.finish_btn);
 
@@ -128,6 +134,11 @@ public class MapActivityFrag extends Fragment {
                 }
             }
         });
+
+        new DisplayRunnersOnMap(getActivity(),rootView, googleMap, mMapView, R.id.runners_list).execute();
+//
+//        //dissplay markers
+//        new DisplayRunnersOnMap(getActivity(), googleMap, R.id.map).execute();
 
         return rootView;
     }

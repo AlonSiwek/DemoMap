@@ -115,7 +115,7 @@ public class LocationUpdateService extends Service {
         // This Thread is for the connection - we cannot conect is service without Thread
         Thread t = new Thread(new Runnable() {
             JSONObject obj = LocationUpdateServiceOnTheRun;
-            //Log.d("OBJ"
+
             public void run() {
                 try {
                     postDataToServer(obj);
@@ -234,6 +234,3 @@ public class LocationUpdateService extends Service {
 
     }
 }
-
-
-

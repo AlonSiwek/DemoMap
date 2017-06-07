@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 
 
+import com.google.android.gms.maps.MapView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -143,7 +145,6 @@ public class UserAtApp extends AsyncTask<Void,Void,String> {
         return String.valueOf(result);
     }
 
-
     protected void onPostExecute(String result){
         if(result == null)
         {
@@ -163,6 +164,8 @@ public class UserAtApp extends AsyncTask<Void,Void,String> {
             mRecyleView.setAdapter(mAdapter);
             mRecyleView.setLayoutManager(new LinearLayoutManager(this.mCtx));
             mAdapter.notifyDataSetChanged();
+
+
         }
 
         catch (Exception e){

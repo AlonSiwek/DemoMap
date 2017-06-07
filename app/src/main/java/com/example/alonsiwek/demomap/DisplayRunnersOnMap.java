@@ -1,11 +1,20 @@
 package com.example.alonsiwek.demomap;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,6 +25,8 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -28,13 +39,18 @@ public class DisplayRunnersOnMap extends AsyncTask <Void,Void,String> {
     Context mContext;
     View mView;
     int viewID;
+    GoogleMap gMap;
+    MapView mapView;
+
 
     DisplayRunnersOnMap() {}
 
-    DisplayRunnersOnMap(Context context,View view, int viewID){
+    DisplayRunnersOnMap(Context context,View view, GoogleMap gMap, MapView mapView, int viewID){
         this.mContext = context;
         this.mView = view;
         this.viewID = viewID;
+        this.gMap = gMap;
+        this.mapView = mapView;
     }
 
 
@@ -135,6 +151,12 @@ public class DisplayRunnersOnMap extends AsyncTask <Void,Void,String> {
         return String.valueOf(result);
     }
 
+
+
+    int mMapView;
+
+
+
     protected void onPostExecute(String result) {
         if (result == null) {
             return;
@@ -144,16 +166,42 @@ public class DisplayRunnersOnMap extends AsyncTask <Void,Void,String> {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.mContext);
         mRecyleView.setLayoutManager(layoutManager);
 
+
+
         Log.d("DisplayRunnersOnMap","in parser and the josn string: " + "\n" + result.toString() );
         try {
-            ArrayList<UserData> data = Parser.parseUsers(result);
+            final ArrayList<UserData> data = Parser.parseUsers(result);
+
             // Setup and Handover data to recyclerview
             AdapterUsers mAdapter = new AdapterUsers(mContext, data);
             mRecyleView.setAdapter(mAdapter);
             mRecyleView.setLayoutManager
                     (new LinearLayoutManager(this.mContext , LinearLayoutManager.HORIZONTAL , false));
             mAdapter.notifyDataSetChanged();
+
+
+            mapView.getMapAsync(new OnMapReadyCallback() {
+
+
+                @Override
+                public void onMapReady(GoogleMap googleMap) {
+
+                    for (int i = 0; i < data.size(); i++) {
+                        double lat = data.get(i).coordinates[1];
+                        double lng = data.get(i).coordinates[0];
+                        LatLng pos = new LatLng(lat, lng);
+                        String title = new String();
+                        title = data.get(i).user_name;
+                        googleMap.addMarker(new MarkerOptions().position(pos).title(title));
+                    }
+                }
+            });
+
+
+
         }
+
+
 
         catch (Exception e){
             Log.e("UserAtApp","Exception at parser:" + e.toString());
