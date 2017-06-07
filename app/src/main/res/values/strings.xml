@@ -19,4 +19,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="gps_network_not_enabled">GPS is close, Please turn it on</string>
+    <string name="open_location_settings">Enable location</string>
+    <string name="Cancel">Cancel</string>
 </resources>

@@ -3,46 +3,27 @@ package com.example.alonsiwek.demomap;
 import android.content.Context;
 import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.vision.barcode.Barcode;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import static android.R.attr.fragment;
-import static com.example.alonsiwek.demomap.MainPageFrag.updateRunningState;
-import static com.example.alonsiwek.demomap.R.id.login_btn;
-import static com.example.alonsiwek.demomap.R.id.map;
 
 /**
  * Created by dor on 1/11/2017.
@@ -54,6 +35,8 @@ public class MapActivityFrag extends Fragment {
     MapView mMapView;
     private GoogleMap googleMap;
     Boolean mIsRunning_atMAF;
+
+    private static int MAP_ZOOM_RATE = 15;
 
 
     @Override
@@ -88,6 +71,7 @@ public class MapActivityFrag extends Fragment {
                 LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
                 Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(new Criteria(), false));
 
+
                 if (location != null) {
                     double myLat = location.getLatitude();
                     double myLong = location.getLongitude();
@@ -96,8 +80,11 @@ public class MapActivityFrag extends Fragment {
                     Log.d("MapActivityFrag","long: " + myLong);
 
                     // For zooming automatically to my location
-                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(myLat, myLong), 10);
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(myLat, myLong), MAP_ZOOM_RATE);
                     mMap.animateCamera(cameraUpdate);
+                }
+                else{
+                    Log.d("MapActivityFrag","location is: NULL ");
                 }
             }
         });

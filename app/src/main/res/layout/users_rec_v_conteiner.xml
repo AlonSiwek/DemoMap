@@ -4,9 +4,8 @@
     android:layout_height="wrap_content"
 
     android:clickable="true"
-    android:orientation="horizontal"
-    android:padding="10dp"
-    >
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <TextView
         android:layout_width="wrap_content"
@@ -17,7 +16,7 @@
         android:textStyle="bold"
         android:layout_gravity="center_vertical"
         android:layout_margin="6dp"
-        />
+       />
 
 
 </LinearLayout>

@@ -1,24 +1,18 @@
 package com.example.alonsiwek.demomap;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
+import android.icu.text.LocaleDisplayNames;
+import android.icu.text.SimpleDateFormat;
+import android.icu.util.Calendar;
+import android.icu.util.TimeZone;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.support.annotation.RequiresApi;
+import android.text.LoginFilter;
 import android.util.Log;
-
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.android.gms.location.LocationServices;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,18 +25,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
-import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.sql.Time;
 import java.text.DateFormat;
 import java.util.Date;
-
-import javax.net.ssl.HttpsURLConnection;
 
 
 /**
@@ -56,9 +45,7 @@ public class LocationUpdateService extends Service {
     //dummy constructor
     public LocationUpdateService(){
         super();
-
     }
-
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -84,14 +71,16 @@ public class LocationUpdateService extends Service {
     /**
      * Gets the current location of the device
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void getDeviceLocationForLocationService() throws IOException, JSONException {
+
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         Location currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         if (currentLocation != null) {
             Log.d("LocationUpdateService", "getDeviceLocationForLocationService: " + currentLocation);
         } else {
-            Log.d("LocationUpdateService", "getDeviceLocationForLocationService: null");
+            Log.d("LocationUpdateService", "getDeviceLocationForLocationService: currentLocation: " + currentLocation);
             return;
         }
 
@@ -103,10 +92,15 @@ public class LocationUpdateService extends Service {
         coordinates.put(currentLocation.getLongitude());  //long
         coordinates.put(currentLocation.getLatitude());  //lat
 
-        LocationUpdateServiceOnTheRun.put("time", DateFormat.getDateTimeInstance().format(new Date()));
+        //TODO: put the correct time format
 
-        Log.d("LocationUpdateService", "time in JSON:" +
-                DateFormat.getDateTimeInstance().format(new Date()));
+        // Pass the time
+        SimpleDateFormat jsonDateFromat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
+        jsonDateFromat.setTimeZone(TimeZone.GMT_ZONE);
+        String currentDateTime = jsonDateFromat.format(Calendar.getInstance());  // Calendar rightNow = Calendar.getInstance();
+        LocationUpdateServiceOnTheRun.put("time", currentDateTime);
+
+        Log.d("LocationUpdateService", "time in JSON:" + '\n' + currentDateTime);
 
         inside_loc.put("type","Point");
         inside_loc.put("coordinates",coordinates);
@@ -118,8 +112,15 @@ public class LocationUpdateService extends Service {
 
             public void run() {
                 try {
+                    Log.d("LocationUpdateService", "the json obj to send: " + '\n' + LocationUpdateServiceOnTheRun.toString());
                     postDataToServer(obj);
                 } catch (IOException e) {
+                    Log.e("LocationUpdateService"," error in thread: IOException"
+                            + '\n' + "error at: " +  e.toString());
+                    e.printStackTrace();
+                } catch (Exception e){
+                    Log.e("LocationUpdateService"," error in thread: tException"
+                            + '\n' + "error at: " +  e.toString());
                     e.printStackTrace();
                 }
             }
@@ -152,9 +153,9 @@ public class LocationUpdateService extends Service {
 
             try {
                 urlConnection = (HttpURLConnection) url.openConnection();
-                Log.d("LocationUpdateService" , String.valueOf(urlConnection));
+                Log.d("LocationUpdateService" ," urlConnection is: " + '\n' + String.valueOf(urlConnection));
             } catch ( IOException e){
-                Log.e("LocationUpdateService" , String.valueOf(e));
+                Log.e("LocationUpdateService" ,"IOException: " + String.valueOf(e));
             }
 
 
@@ -173,6 +174,7 @@ public class LocationUpdateService extends Service {
 
             try {
                 urlConnection.connect();
+                Log.d("LocationUpdateService", "try to: urlConnection.connect()");
             }
             catch(Exception e) {
                 Log.e("LocationUpdateService","Connect exception: " + e.toString());
@@ -211,17 +213,20 @@ public class LocationUpdateService extends Service {
 
             while ((line = bufferedReader.readLine()) != null){
                 result.append(line).append("\n" );
-
-                Log.d("LocationUpdateService", String.valueOf(result));
-
             }
+
+            Log.d("LocationUpdateService", " ** the FINAL result string is: **"  + '\n' + String.valueOf(result));
+
             // disconnect
             urlConnection.disconnect();
         } catch (ProtocolException e) {
+            Log.e("LocationUpdateService", "ProtocolException: " + e.toString() );
             e.printStackTrace();
         } catch (MalformedURLException e) {
+            Log.e("LocationUpdateService", "MalformedURLException: " + e.toString() );
             e.printStackTrace();
         } catch (IOException e) {
+            Log.e("LocationUpdateService", "IOException: " + e.toString() );
             e.printStackTrace();
         } finally {
             if (bufferedReader != null){
