@@ -174,11 +174,9 @@ public class UserAtApp extends AsyncTask<Void,Void,String> {
             AdapterUsers mAdapter = new AdapterUsers(mCtx, data);
             mRecyleView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
-<<<<<<< HEAD
 
-=======
             mRecyleView.getLayoutManager().onRestoreInstanceState(recyclerViewState);
->>>>>>> 75225d5a0bbd95442b7ca35e0be20a4cedafa08c
+
 
         }
 
