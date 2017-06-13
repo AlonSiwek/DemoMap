@@ -135,6 +135,16 @@ public class MainScreen extends AppCompatActivity {
             viewPager.setAdapter(_fragmentPagerAdapter);
 
         }
+
+        /**
+         * Set to the chosen fragment
+         * @param item -  Item index to select
+         * @param smoothScroll - True to smoothly scroll to the new item,
+         *                       false to transition immediately
+         */
+        public void setCurrentItem (int item, boolean smoothScroll) {
+            viewPager.setCurrentItem(item, smoothScroll);
+        }
     }
 }
 

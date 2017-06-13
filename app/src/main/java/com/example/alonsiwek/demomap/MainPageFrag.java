@@ -1,17 +1,9 @@
 package com.example.alonsiwek.demomap;
 
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,24 +11,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static android.os.Looper.getMainLooper;
 
 /**
  * Created by dor on 1/11/2017.
@@ -48,7 +36,8 @@ public class MainPageFrag extends Fragment {
     Boolean mIsRunning = false;
 
     private static final int UPDATE_RECYCLE_VIEW_DURATION = 5000;
-
+    // 3200 is Toast.Length long
+    private static final int SWIPE_TO_MAPS_FRAG_DURATION = 3200 + 200;
 
 
     @Override
@@ -64,30 +53,18 @@ public class MainPageFrag extends Fragment {
         ImageButton btn_go = (ImageButton) view.findViewById(R.id.go_walking_btn);
 
 
-        // Toast of the Main button
-        // Set a click listener for Fragment button
+        /* Toast of the Main button
+        *  Set a click listener for Fragment button
+        *  Auto swipe to the next screen
+        */
         btn_go.setOnClickListener(new View.OnClickListener() {
-
 
 
             @Override
             public void onClick(View v) {
 
-                // Get the application context
-                Toast toast = new Toast(getContext());
-                // Set the Toast display position layout center
-                toast.setGravity(Gravity.CENTER, 0, 0);
-
-                LayoutInflater inflater = getLayoutInflater(savedInstanceState);
-                View layout = inflater.inflate(R.layout.go_massage_toast, null);
-
-                // Set the Toast duration
-                toast.setDuration(Toast.LENGTH_LONG);
-
-                // Set the Toast custom layout
-                toast.setView(layout);
-                toast.show();
-
+                // show the Toast
+                activateToast(R.layout.go_massage_toast ,savedInstanceState, Toast.LENGTH_LONG);
 
                 //  UPDATE DB
                 mIsRunning = true;
@@ -96,24 +73,77 @@ public class MainPageFrag extends Fragment {
                  * update DB only when mIsRunning == false will be with FINISH button.
                  */
                 Log.d(MainPageFrag.class.toString(),"mIsRunning:" +  String.valueOf(mIsRunning));
-                if (mIsRunning) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                updateRunningState(mIsRunning);
-                            } catch (IOException e) {
-                                Log.e(MainPageFrag.class.toString(), e.toString());
-                                e.printStackTrace();
-                                return;
-                            }
-                        }
-                    }).start();
-                }
+                activate_GoButton(mIsRunning);
+
+                // auto swipe to next screen
+                activateOnClickSwipe(SWIPE_TO_MAPS_FRAG_DURATION);
             }
         });
 
         return view;
+    }
+
+    /**
+     * Swipe to Maps fragemnt after delay
+     * @param duration - delay duration
+     */
+    public void activateOnClickSwipe(int duration){
+
+        new Handler(getMainLooper()).postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                ((MainScreen.PageAdapter)getActivity()).setCurrentItem
+                        (MainScreen.PageAdapter.FRAGMENT_TWO_MAP , true);
+
+            }
+        } , duration);
+
+    }
+
+    /**
+     * Call the Thread that activate updateRunningState Method
+     * @param mIsRunningStatus
+     */
+    public void activate_GoButton(boolean mIsRunningStatus){
+        if (mIsRunningStatus) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        updateRunningState(mIsRunning);
+                    } catch (IOException e) {
+                        Log.e(MainPageFrag.class.toString(), e.toString());
+                        e.printStackTrace();
+                        return;
+                    }
+                }
+            }).start();
+        }
+    }
+
+    /**
+     * Display Toast to the screen
+     * @param toastLayout - the Toast layot
+     * @param savedInstanceState
+     * @param toastLength - duration of Toast
+     */
+    public void activateToast(int toastLayout, Bundle savedInstanceState, int toastLength){
+
+        // Get the application context
+        Toast toast = new Toast(getContext());
+        // Set the Toast display position layout center
+        toast.setGravity(Gravity.CENTER, 0, 0);
+
+        LayoutInflater inflater = getLayoutInflater(savedInstanceState);
+        View layout = inflater.inflate(toastLayout, null);
+
+        // Set the Toast duration
+        toast.setDuration(toastLength);
+
+        // Set the Toast custom layout
+        toast.setView(layout);
+        toast.show();
     }
 
     /**
