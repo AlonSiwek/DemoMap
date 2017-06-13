@@ -92,8 +92,6 @@ public class LocationUpdateService extends Service {
         coordinates.put(currentLocation.getLongitude());  //long
         coordinates.put(currentLocation.getLatitude());  //lat
 
-        //TODO: put the correct time format
-
         // Pass the time
         SimpleDateFormat jsonDateFromat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
         jsonDateFromat.setTimeZone(TimeZone.GMT_ZONE);
