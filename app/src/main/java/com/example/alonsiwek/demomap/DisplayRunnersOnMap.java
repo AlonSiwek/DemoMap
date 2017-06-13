@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -41,7 +42,7 @@ public class DisplayRunnersOnMap extends AsyncTask <Void,Void,String> {
     int viewID;
     GoogleMap gMap;
     MapView mapView;
-
+    final ArrayList<UserData> data = null;
 
     DisplayRunnersOnMap() {}
 
@@ -168,6 +169,7 @@ public class DisplayRunnersOnMap extends AsyncTask <Void,Void,String> {
 
 
 
+
         Log.d("DisplayRunnersOnMap","in parser and the josn string: " + "\n" + result.toString() );
         try {
             final ArrayList<UserData> data = Parser.parseUsers(result);
@@ -178,6 +180,7 @@ public class DisplayRunnersOnMap extends AsyncTask <Void,Void,String> {
             mRecyleView.setLayoutManager
                     (new LinearLayoutManager(this.mContext , LinearLayoutManager.HORIZONTAL , false));
             mAdapter.notifyDataSetChanged();
+
 
 
             mapView.getMapAsync(new OnMapReadyCallback() {
@@ -199,9 +202,9 @@ public class DisplayRunnersOnMap extends AsyncTask <Void,Void,String> {
 
 
 
+
+
         }
-
-
 
         catch (Exception e){
             Log.e("UserAtApp","Exception at parser:" + e.toString());
@@ -209,6 +212,7 @@ public class DisplayRunnersOnMap extends AsyncTask <Void,Void,String> {
         }
 
     }
+
 
 
 

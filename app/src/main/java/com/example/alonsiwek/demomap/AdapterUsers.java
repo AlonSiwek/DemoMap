@@ -35,6 +35,7 @@ public class AdapterUsers extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = layoutInflater.inflate(R.layout.users_rec_v_conteiner,parent,false);
+
         MyHolder holer = new MyHolder(view);
         return holer;
     }

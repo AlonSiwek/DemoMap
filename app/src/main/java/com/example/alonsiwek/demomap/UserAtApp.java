@@ -170,6 +170,11 @@ public class UserAtApp extends AsyncTask<Void,Void,String> {
         Log.d("UserAtApp","in parser and the josn string: " + "\n" + result.toString() );
         try {
             ArrayList<UserData> data = Parser.parseUsers(result);
+
+            for (int i = 0; i < data.size(); i++){
+                if (data.get(i).isRunning == false)
+                    data.remove(i);
+            }
             // Setup and Handover data to recyclerview
             AdapterUsers mAdapter = new AdapterUsers(mCtx, data);
             mRecyleView.setAdapter(mAdapter);

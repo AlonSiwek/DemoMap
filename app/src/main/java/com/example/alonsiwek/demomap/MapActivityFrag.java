@@ -37,15 +37,13 @@ public class MapActivityFrag extends Fragment {
     Boolean mIsRunning_atMAF;
 
     private static int MAP_ZOOM_RATE = 15;
+    private static final int UPDATE_RECYCLE_VIEW_DURATION = 5000;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView  = inflater.inflate(R.layout.activity_maps, null, false);
-//
-//        TimerTask task = new UserAtAppTimer(getActivity(), rootView, R.id.map);
-//        new Timer().scheduleAtFixedRate(task,0,5000);
-//
+
 
         mMapView = (MapView) rootView.findViewById(R.id.map);
         mMapView.onCreate(savedInstanceState);
