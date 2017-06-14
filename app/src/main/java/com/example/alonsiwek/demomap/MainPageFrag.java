@@ -37,7 +37,8 @@ public class MainPageFrag extends Fragment {
 
     private static final int UPDATE_RECYCLE_VIEW_DURATION = 5000;
     // 3200 is Toast.Length long
-    private static final int SWIPE_TO_MAPS_FRAG_DURATION = 3200 + 200;
+    private static final int SWIPE_TO_MAPS_FRAG_DURATION_GO_BUTTON = 3200 + 200;
+    private static final int SWIPE_TO_MAPS_FRAG_DURATION_RIGHT_ARROW_BUTTON = 150;
 
 
     @Override
@@ -48,10 +49,9 @@ public class MainPageFrag extends Fragment {
         TimerTask task = new UserAtAppTimer(getActivity(), view, R.id.users_list);
         new Timer().scheduleAtFixedRate(task,0,UPDATE_RECYCLE_VIEW_DURATION);
 
-
         // get the widgets reference from Fragment XML layout
         ImageButton btn_go = (ImageButton) view.findViewById(R.id.go_walking_btn);
-
+        ImageButton btn_rightArrow = (ImageButton) view.findViewById(R.id.right_arrow);
 
         /* Toast of the Main button
         *  Set a click listener for Fragment button
@@ -76,7 +76,16 @@ public class MainPageFrag extends Fragment {
                 activate_GoButton(mIsRunning);
 
                 // auto swipe to next screen
-                activateOnClickSwipe(SWIPE_TO_MAPS_FRAG_DURATION);
+                activateOnClickSwipe(SWIPE_TO_MAPS_FRAG_DURATION_GO_BUTTON);
+            }
+        });
+
+        // Swipe to map fragment
+        btn_rightArrow.setOnClickListener(new  View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                activateOnClickSwipe(SWIPE_TO_MAPS_FRAG_DURATION_RIGHT_ARROW_BUTTON);
             }
         });
 
