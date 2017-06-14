@@ -141,6 +141,14 @@ public class UserAtApp extends AsyncTask<Void,Void,String> {
             Log.e("UsersAtApp", e.toString());
             e.printStackTrace();
             return null;
+        } catch (RuntimeException e){
+            Log.e("UsersAtApp", e.toString());
+            e.printStackTrace();
+            return null;
+        } catch (Exception e){
+            Log.e("UsersAtApp", e.toString());
+            e.printStackTrace();
+            return null;
         }
 
         return String.valueOf(result);

@@ -17,9 +17,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -50,45 +48,37 @@ public class MainPageFrag extends Fragment {
     Boolean mIsRunning = false;
 
     private static final int UPDATE_RECYCLE_VIEW_DURATION = 5000;
-    int isVisible = 0;
-
+    // 3200 is Toast.Length long
+    private static final int SWIPE_TO_MAPS_FRAG_DURATION_GO_BUTTON = 3200 + 200;
+    private static final int SWIPE_TO_MAPS_FRAG_DURATION_RIGHT_ARROW_BUTTON = 150;
 
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.main_screen_frag, null);
+        View view = inflater.inflate(R.layout.main_screen_frag, null);
 
         TimerTask task = new UserAtAppTimer(getActivity(), view, R.id.users_list);
         new Timer().scheduleAtFixedRate(task,0,UPDATE_RECYCLE_VIEW_DURATION);
 
+
+        // get the widgets reference from Fragment XML layout
         ImageButton btn_go = (ImageButton) view.findViewById(R.id.go_walking_btn);
+        ImageButton btn_rightArrow = (ImageButton) view.findViewById(R.id.right_arrow);
         final RecyclerView mRecyleView = (RecyclerView) view.findViewById(R.id.users_list);
         final TextView tv = (TextView) view.findViewById(R.id.your_friends_tv);
         // get the widgets reference from Fragment XML layout
 
+        /* Toast of the Main button
+        *  Set a click listener for Fragment button
+        *  Auto swipe to the next screen
+        */
         final ImageButton btn_bell = (ImageButton) view.findViewById(R.id.bell);
 
 
 
         final TextView numOfNotification = (TextView) view.findViewById(R.id.red_cycle);
         numOfNotification.setText(String.valueOf("  5"));
-        /*
-        TimerTask displaySize = new TimerTask() {
-            @Override
-            public void run() {
-                int size;
-                if(null != mRecyleView.getAdapter()){
-                    size = mRecyleView.getAdapter().getItemCount();
-                    numOfNotification.setText(String.valueOf(size));
-                }
-            }
-        };
-        new Timer().scheduleAtFixedRate(displaySize,1,2000);
-
-        */
-//        TimerTask task2 = new UserAtAppTimer(getActivity(), view, R.id.red_cycle);
-//        new Timer().scheduleAtFixedRate(task2,0,100);
 
         btn_bell.setOnClickListener(new View.OnClickListener() {
 
@@ -178,7 +168,7 @@ public class MainPageFrag extends Fragment {
         }
 
         try {
-            url = new URL(Constants.SERVER_URL + Constants.LOC_STATUS_PATH + Constants.user_id);
+           url = new URL(Constants.SERVER_URL + Constants.LOC_STATUS_PATH + Constants.user_id);
         } catch (MalformedURLException e) {
             Log.e(MainPageFrag.class.toString(), "error at url: "  + e.toString());
             e.printStackTrace();
@@ -243,3 +233,6 @@ public class MainPageFrag extends Fragment {
         super.onDestroy();
     }
 }
+
+
+

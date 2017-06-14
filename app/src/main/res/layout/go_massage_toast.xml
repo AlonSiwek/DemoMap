@@ -11,8 +11,9 @@
     <TextView
         android:id="@+id/go_massage_toast_TextView"
         android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:text="Notifications has neen sent to your friends  \n Let's start Walkii!"
+        android:layout_height="wrap_content"
+        android:text="    Notifications has been sent \n             to your friends
+            \n            let's start Walkii!"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textDirection="ltr"
