@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -195,7 +196,7 @@ public class DisplayRunnersOnMap extends AsyncTask <Void,Void,String> {
                         LatLng pos = new LatLng(lat, lng);
                         String title = new String();
                         title = data.get(i).user_name;
-                        googleMap.addMarker(new MarkerOptions().position(pos).title(title));
+                        googleMap.addMarker(new MarkerOptions().position(pos).title(title).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
                     }
                 }
             });
