@@ -120,10 +120,12 @@ public class MapActivityFrag extends Fragment {
             }
         });
 
-        new DisplayRunnersOnMap(getActivity(),rootView, googleMap, mMapView, R.id.runners_list).execute();
-//
-//        //dissplay markers
-//        new DisplayRunnersOnMap(getActivity(), googleMap, R.id.map).execute();
+        // set Timer to map
+        TimerTask task = new DisplayRunnersOnMapTimer
+                (getActivity(),rootView,R.id.runners_list_at_map_frag,googleMap,mMapView);
+        new Timer().scheduleAtFixedRate(task,0,UPDATE_RECYCLE_VIEW_DURATION);
+
+
 
         return rootView;
     }

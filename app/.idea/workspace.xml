@@ -13,11 +13,15 @@
     <bookmark url="file://$PROJECT_DIR$/src/main/java/com/example/alonsiwek/demomap/MainPageFrag.java" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< Updated upstream
     <list default="true" id="9e9f32c4-7fd4-4b2c-b203-c9e96a4fd73c" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/res/layout/activity_maps.xml" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_maps.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/res/layout/main_screen_frag.xml" afterPath="$PROJECT_DIR$/src/main/res/layout/main_screen_frag.xml" />
     </list>
+=======
+    <list default="true" id="9e9f32c4-7fd4-4b2c-b203-c9e96a4fd73c" name="Default" comment="" />
+>>>>>>> Stashed changes
     <ignored path="app.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/build/classes/" />

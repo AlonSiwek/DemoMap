@@ -39,7 +39,7 @@
 
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/runners_list"
+        android:id="@+id/runners_list_at_map_frag"
         android:layout_width="316dp"
         android:layout_height="80dp"
         android:paddingTop="15dp"

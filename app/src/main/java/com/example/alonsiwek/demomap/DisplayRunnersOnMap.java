@@ -1,14 +1,11 @@
 package com.example.alonsiwek.demomap;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -27,13 +24,12 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import javax.net.ssl.HttpsURLConnection;
+import java.util.HashMap;
 
 /**
  * Created by Dor on 27-May-17.
+ * Get all the people that walk from the server
+ *
  */
 
 public class DisplayRunnersOnMap extends AsyncTask <Void,Void,String> {
@@ -43,9 +39,8 @@ public class DisplayRunnersOnMap extends AsyncTask <Void,Void,String> {
     int viewID;
     GoogleMap gMap;
     MapView mapView;
+    static HashMap<String, Marker> usersMarkers = new HashMap<>();
     final ArrayList<UserData> data = null;
-
-    DisplayRunnersOnMap() {}
 
     DisplayRunnersOnMap(Context context,View view, GoogleMap gMap, MapView mapView, int viewID){
         this.mContext = context;
@@ -59,7 +54,7 @@ public class DisplayRunnersOnMap extends AsyncTask <Void,Void,String> {
     @Override
     protected String doInBackground(Void... params) {
 
-        String isNull = getAllRunners();
+        String isNull = getRunnersAtDisplayROM();
         if (isNull == null){
             Log.e(this.getClass().toString(),  "Error fetching users");
             return null;
@@ -68,12 +63,12 @@ public class DisplayRunnersOnMap extends AsyncTask <Void,Void,String> {
         return isNull;
     }
 
-    String getAllRunners (){
-
-        String IS_RUNNING = "?is_running=true";
-
-        String get_all_users_url = Constants.SERVER_URL + Constants.LOC_STATUS_PATH + IS_RUNNING;
-
+    /**
+     * Get the people that walk from the server
+     * @return json string of the people
+     */
+    String getRunnersAtDisplayROM(){
+        String get_all_users_url = Constants.SERVER_URL + Constants.LOC_STATUS_PATH;
 
         BufferedReader bufferedReader = null;
         StringBuilder result = new StringBuilder();
@@ -153,12 +148,10 @@ public class DisplayRunnersOnMap extends AsyncTask <Void,Void,String> {
         return String.valueOf(result);
     }
 
-
-
-    int mMapView;
-
-
-
+    /**
+     * add the people to the recycleView
+     * @param result - the json string of the walkers
+     */
     protected void onPostExecute(String result) {
         if (result == null) {
             return;
@@ -168,54 +161,71 @@ public class DisplayRunnersOnMap extends AsyncTask <Void,Void,String> {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.mContext);
         mRecyleView.setLayoutManager(layoutManager);
 
-
-
-
         Log.d("DisplayRunnersOnMap","in parser and the josn string: " + "\n" + result.toString() );
         try {
-            final ArrayList<UserData> data = Parser.parseUsers(result);
+            // all the users
+            final ArrayList<UserData> data= Parser.parseUsers(result);
 
+            // all the runners
+            ArrayList<UserData> runners = (ArrayList<UserData>) data.clone();
+
+            // remobe the specific user
+            for (UserData user : data) {
+                if(!user.isRunning)
+                {
+                    runners.remove(user);
+                }
+            }
             // Setup and Handover data to recyclerview
-            AdapterUsers mAdapter = new AdapterUsers(mContext, data);
+
+            AdapterUsers mAdapter = new AdapterUsers(mContext, runners);
             mRecyleView.setAdapter(mAdapter);
             mRecyleView.setLayoutManager
                     (new LinearLayoutManager(this.mContext , LinearLayoutManager.HORIZONTAL , false));
             mAdapter.notifyDataSetChanged();
 
-
-
+            // desplay users as markers
             mapView.getMapAsync(new OnMapReadyCallback() {
-
 
                 @Override
                 public void onMapReady(GoogleMap googleMap) {
 
                     for (int i = 0; i < data.size(); i++) {
-                        double lat = data.get(i).coordinates[1];
-                        double lng = data.get(i).coordinates[0];
+                        UserData userInfo = data.get(i);
+                        if(userInfo.user_id.equals(Constants.user_id))
+                            continue;
+
+                        double lat = userInfo.coordinates[1];
+                        double lng = userInfo.coordinates[0];
                         LatLng pos = new LatLng(lat, lng);
-                        String title = new String();
-                        title = data.get(i).user_name;
-                        googleMap.addMarker(new MarkerOptions().position(pos).title(title).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                        String title;
+                        title = userInfo.user_name;
+
+                        //update the marker location
+                        if(usersMarkers.containsKey(userInfo.user_id)) {
+                            // Pin user location
+                            if(userInfo.isRunning)
+                                usersMarkers.get(userInfo.user_id).setPosition(pos);
+                            else {
+                                // Remove a user from the map if he not running
+                                usersMarkers.get(userInfo.user_id).remove();
+                                usersMarkers.remove(userInfo.user_id);
+                            }
+                        }
+                        else
+                        {
+                            if(!userInfo.isRunning)
+                                continue;
+                            Marker marker = googleMap.addMarker(new MarkerOptions().position(pos).title(title).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                            usersMarkers.put(userInfo.user_id, marker);
+                        }
                     }
                 }
             });
-
-
-
-
-
         }
-
         catch (Exception e){
             Log.e("UserAtApp","Exception at parser:" + e.toString());
             return;
         }
-
     }
-
-
-
-
-
 }

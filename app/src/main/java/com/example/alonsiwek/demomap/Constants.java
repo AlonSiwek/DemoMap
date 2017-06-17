@@ -12,6 +12,8 @@ import android.content.SharedPreferences;
 public final class Constants {
     final static String SERVER_URL = "https://walkiii.herokuapp.com"; // http://192.168.56.1:8080
     final static String LOC_STATUS_PATH = "/api/locationStatus/";
+    final  static String IS_RUNNING = "?is_running=true";
+
     static String user_id = null;
     static String user_name = null;
     static String user_phone = null;
