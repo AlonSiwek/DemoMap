@@ -19,6 +19,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,8 +51,8 @@ import java.util.TimerTask;
 public class MainPageFrag extends Fragment {
 
     Boolean mIsRunning = false;
-
     private static final int UPDATE_RECYCLE_VIEW_DURATION = 5000;
+
     // 3200 is Toast.Length long
     private static final int SWIPE_TO_MAPS_FRAG_DURATION_GO_BUTTON = 3200 + 200;
     private static final int SWIPE_TO_MAPS_FRAG_DURATION_RIGHT_ARROW_BUTTON = 150;
@@ -58,50 +61,42 @@ public class MainPageFrag extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.main_screen_frag, null);
+        final View view = inflater.inflate(R.layout.main_screen_frag, null);
 
+        // set Timer to recycle list
         TimerTask task = new UserAtAppTimer(getActivity(), view, R.id.users_list);
         new Timer().scheduleAtFixedRate(task,0,UPDATE_RECYCLE_VIEW_DURATION);
-
 
         // get the widgets reference from Fragment XML layout
         ImageButton btn_go = (ImageButton) view.findViewById(R.id.go_walking_btn);
         ImageButton btn_rightArrow = (ImageButton) view.findViewById(R.id.right_arrow);
         final RecyclerView mRecyleView = (RecyclerView) view.findViewById(R.id.users_list);
         final TextView tv = (TextView) view.findViewById(R.id.your_friends_tv);
-        // get the widgets reference from Fragment XML layout
-
-        /* Toast of the Main button
-        *  Set a click listener for Fragment button
-        *  Auto swipe to the next screen
-        */
         final ImageButton btn_bell = (ImageButton) view.findViewById(R.id.bell);
 
-
-
         final TextView numOfNotification = (TextView) view.findViewById(R.id.red_cycle);
-        numOfNotification.setText(String.valueOf("  5"));
+        numOfNotification.setText(String.valueOf("  2"));
 
+        // set the viability functionality
         btn_bell.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-
                 btn_bell.setVisibility(View.GONE);
                 numOfNotification.setVisibility(View.GONE);
                 tv.setVisibility(View.VISIBLE);
                 mRecyleView.setVisibility(View.VISIBLE);
 
-
-
             }
         });
 
-        // Toast of the Main button
-        // Set a click listener for Fragment button
+
+        /* set functionality as Go button
+        * Toast of the Main button
+        *  Set a click listener for Fragment button
+        *  Auto swipe to the next screen
+        */
         btn_go.setOnClickListener(new View.OnClickListener() {
-
-
 
             @Override
             public void onClick(View v) {
@@ -157,13 +152,13 @@ public class MainPageFrag extends Fragment {
      * Call the Thread that activate updateRunningState Method
      * @param mIsRunningStatus
      */
-    public void activate_GoButton(boolean mIsRunningStatus){
+    public static void activate_GoButton(final boolean mIsRunningStatus){
         if (mIsRunningStatus) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        updateRunningState(mIsRunning);
+                        updateRunningState(mIsRunningStatus);
                     } catch (IOException e) {
                         Log.e(MainPageFrag.class.toString(), e.toString());
                         e.printStackTrace();
@@ -180,7 +175,7 @@ public class MainPageFrag extends Fragment {
      * @param savedInstanceState
      * @param toastLength - duration of Toast
      */
-    public void activateToast(int toastLayout, Bundle savedInstanceState, int toastLength){
+    public  void activateToast(int toastLayout, Bundle savedInstanceState, int toastLength){
 
         // Get the application context
         Toast toast = new Toast(getContext());

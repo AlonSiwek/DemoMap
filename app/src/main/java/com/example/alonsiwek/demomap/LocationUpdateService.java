@@ -9,6 +9,7 @@ import android.icu.util.TimeZone;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.RequiresApi;
 import android.text.LoginFilter;
@@ -32,6 +33,8 @@ import java.net.URL;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
@@ -39,8 +42,10 @@ import java.util.Date;
  */
 public class LocationUpdateService extends Service {
 
+    private Handler mHandler = new Handler();
 
     private String user_id;
+    private Timer mTimer;
 
     //dummy constructor
     public LocationUpdateService(){
@@ -54,8 +59,8 @@ public class LocationUpdateService extends Service {
     }
 
     @Override
-    public void onStart(Intent intent, int startId) {
-        super.onStart(intent, startId);
+    public void onCreate() {
+        super.onCreate();
         Log.d("LocationUpdateService", "service is started");
         try {
             getDeviceLocationForLocationService();
@@ -66,8 +71,32 @@ public class LocationUpdateService extends Service {
             Log.d("LocationUpdateService", "JSONException: " + e.toString());
             e.printStackTrace();
         }
+
+        mTimer = new Timer();
+        mTimer.scheduleAtFixedRate(new TimeDisplayTimerTask(), 0, 1000);
     }
 
+    class TimeDisplayTimerTask extends TimerTask {
+
+        @Override
+        public void run() {
+            // run on another thread
+            mHandler.post(new Runnable() {
+
+                @Override
+                public void run() {
+                    try {
+                        getDeviceLocationForLocationService();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            });
+        }
+    }
     /**
      * Gets the current location of the device
      */

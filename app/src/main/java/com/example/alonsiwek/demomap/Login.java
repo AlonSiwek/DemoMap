@@ -96,7 +96,7 @@ public class Login extends Activity {
                 Intent intent = new Intent(Login.this, LocationUpdateService.class);
                 PendingIntent pintent = PendingIntent.getService(Login.this, 0, intent, 0);
                 AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-                alarm.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 5*1000, pintent);
+                alarm.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000, pintent);
 
                 //switch to main page
                 Intent toMainPage = new Intent(Login.this, MainScreen.PageAdapter.class);

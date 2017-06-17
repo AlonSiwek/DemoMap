@@ -16,12 +16,8 @@ public class UserAtAppTimer extends TimerTask {
     Context ctx;
     View view;
     int viewId;
-    RecyclerView showRunnerOnMap;
-    List<UserData> list;
 
-
-    public UserAtAppTimer(Context c, View v, int viewId)
-    {
+    public UserAtAppTimer(Context c, View v, int viewId) {
         this.view = v;
         this.ctx = c;
         this.viewId = viewId;

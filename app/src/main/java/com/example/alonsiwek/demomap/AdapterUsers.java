@@ -2,11 +2,12 @@ package com.example.alonsiwek.demomap;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,6 +17,8 @@ import java.util.List;
  * Adapter to Recycle View - show the users that use the app
  */
 
+//TODO: impliment functionalty of the V button.
+
 public class AdapterUsers extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
@@ -23,6 +26,7 @@ public class AdapterUsers extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     List<UserData> dataOfUsersList = Collections.emptyList();
     UserData current_user;
     int currentPos = 0;
+
 
     // create constructor to innitilize context and data sent from MainActivity
     public AdapterUsers(Context context, List<UserData> data){
@@ -36,16 +40,26 @@ public class AdapterUsers extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = layoutInflater.inflate(R.layout.users_rec_v_conteiner,parent,false);
 
-        MyHolder holer = new MyHolder(view);
-        return holer;
+        MyHolder holder = new MyHolder(view);
+
+        // clic the row will add me to the walking, without swich fragment
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainPageFrag.activate_GoButton(true);
+            }
+        });
+        return holder;
     }
 
     //Bind data
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         MyHolder myHolder = (MyHolder) holder;
+
         UserData current = dataOfUsersList.get(position);
         myHolder.textUserName.setText(current.user_name);
+
 
     }
 
@@ -55,21 +69,21 @@ public class AdapterUsers extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return dataOfUsersList.size();
     }
 
+    // return the list of users
+    public List getList(){
+        return this.dataOfUsersList;
+    }
 
     // create constructor to get widget reference
     class MyHolder extends RecyclerView.ViewHolder{
 
         TextView textUserName;
-        TextView textUserPhone;
 
         //Ctor
-        public MyHolder(View itemView) {
+        public MyHolder(final View itemView) {
+
             super(itemView);
             textUserName = (TextView) itemView.findViewById(R.id.user_name_at_contiener);
         }
-    }
-
-    public List getList(){
-        return this.dataOfUsersList;
     }
 }
