@@ -125,7 +125,6 @@ public class UserAtApp extends AsyncTask<Void,Void,String> {
 
             while ((line = bufferedReader.readLine()) != null) {
                 result.append(line).append("\n");
-
             }
             // disconnect
             urlConnection.disconnect();

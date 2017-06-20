@@ -21,15 +21,19 @@
         android:src="@drawable/center_logo_trns_edge"
         tools:padding="2dp"
         android:layout_above="@+id/your_friends_tv"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:clickable="true"/>
 
-    <ImageView
+    <ImageButton
         android:id="@+id/left_arrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/arro_left_hd"
         android:layout_alignBottom="@+id/right_arrow"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:background="@android:color/transparent"
+        android:layout_alignWithParentIfMissing="true"
+        />
 
     <ImageButton
         android:id="@+id/right_arrow"
@@ -39,7 +43,9 @@
         android:layout_marginBottom="109dp"
         android:layout_alignBottom="@+id/go_walking_btn"
         android:layout_alignParentEnd="true"
-        android:background="@android:color/transparent"/>
+        android:background="@android:color/transparent"
+        android:layout_alignWithParentIfMissing="true"
+        />
 
     <TextView
         android:id="@+id/your_friends_tv"
@@ -53,18 +59,19 @@
         android:textStyle="italic"
         android:visibility="invisible"
         android:layout_marginTop="8dp"
-        android:layout_margin="8dp"/>
+        android:layout_margin="8dp"
+        android:onClick=""
+        android:clickable="true"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/users_list"
         android:layout_width="316dp"
-        android:layout_height="140dp"
-        android:paddingTop="15dp"
-        android:layout_marginBottom="10dp"
+        android:layout_height="70dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:visibility="invisible"
-        />
+        android:layout_marginBottom="10dp"
+        android:paddingTop="15dp"
+        android:visibility="invisible" />
 
     <ImageButton
         android:id="@+id/bell"
@@ -74,12 +81,13 @@
         android:src="@drawable/notification_symbol"
         android:layout_gravity = "bottom"
         android:paddingTop="15dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="0dp"
         android:adjustViewBounds="false"
         android:background="@null"
         android:cropToPadding="false"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:clickable="true"/>
     <TextView
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -88,8 +96,8 @@
         android:textSize="26sp"
         android:textStyle="italic"
         android:background="@drawable/red_cycle"
-        android:layout_below="@+id/your_friends_tv"
-        android:layout_alignStart="@+id/bell"
-        android:layout_marginStart="15dp" />
+        android:layout_above="@+id/users_list"
+        android:layout_alignEnd="@+id/bell"
+        android:layout_marginEnd="13dp" />
 
 </RelativeLayout>

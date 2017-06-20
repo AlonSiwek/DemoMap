@@ -68,7 +68,7 @@ public class DisplayRunnersOnMap extends AsyncTask <Void,Void,String> {
      * @return json string of the people
      */
     String getRunnersAtDisplayROM(){
-        String get_all_users_url = Constants.SERVER_URL + Constants.LOC_STATUS_PATH;
+        String get_all_users_url = Constants.SERVER_URL + Constants.LOC_STATUS_PATH + Constants.IS_RUNNING;
 
         BufferedReader bufferedReader = null;
         StringBuilder result = new StringBuilder();
@@ -190,6 +190,8 @@ public class DisplayRunnersOnMap extends AsyncTask <Void,Void,String> {
                 @Override
                 public void onMapReady(GoogleMap googleMap) {
 
+
+
                     for (int i = 0; i < data.size(); i++) {
                         UserData userInfo = data.get(i);
                         if(userInfo.user_id.equals(Constants.user_id))
@@ -200,6 +202,7 @@ public class DisplayRunnersOnMap extends AsyncTask <Void,Void,String> {
                         LatLng pos = new LatLng(lat, lng);
                         String title;
                         title = userInfo.user_name;
+
 
                         //update the marker location
                         if(usersMarkers.containsKey(userInfo.user_id)) {

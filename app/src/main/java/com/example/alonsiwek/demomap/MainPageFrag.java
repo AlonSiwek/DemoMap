@@ -54,7 +54,7 @@ public class MainPageFrag extends Fragment {
     private static final int UPDATE_RECYCLE_VIEW_DURATION = 5000;
 
     // 3200 is Toast.Length long
-    private static final int SWIPE_TO_MAPS_FRAG_DURATION_GO_BUTTON = 3200 + 200;
+    private static final int SWIPE_TO_MAPS_FRAG_DURATION_GO_BUTTON = 3200 + 50;
     private static final int SWIPE_TO_MAPS_FRAG_DURATION_RIGHT_ARROW_BUTTON = 150;
 
 
@@ -68,14 +68,15 @@ public class MainPageFrag extends Fragment {
         new Timer().scheduleAtFixedRate(task,0,UPDATE_RECYCLE_VIEW_DURATION);
 
         // get the widgets reference from Fragment XML layout
-        ImageButton btn_go = (ImageButton) view.findViewById(R.id.go_walking_btn);
-        ImageButton btn_rightArrow = (ImageButton) view.findViewById(R.id.right_arrow);
+        final ImageButton btn_go = (ImageButton) view.findViewById(R.id.go_walking_btn);
+        final ImageButton btn_rightArrow = (ImageButton) view.findViewById(R.id.right_arrow);
+        final ImageButton btn_leftArrow = (ImageButton) view.findViewById(R.id.left_arrow);
         final RecyclerView mRecyleView = (RecyclerView) view.findViewById(R.id.users_list);
         final TextView tv = (TextView) view.findViewById(R.id.your_friends_tv);
         final ImageButton btn_bell = (ImageButton) view.findViewById(R.id.bell);
 
         final TextView numOfNotification = (TextView) view.findViewById(R.id.red_cycle);
-        numOfNotification.setText(String.valueOf("  2"));
+        numOfNotification.setText(String.valueOf("  1"));
 
         // set the viability functionality
         btn_bell.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +88,20 @@ public class MainPageFrag extends Fragment {
                 tv.setVisibility(View.VISIBLE);
                 mRecyleView.setVisibility(View.VISIBLE);
 
+                // make GO button + arrow invisible
+                btn_go.setVisibility(View.GONE);
+                btn_rightArrow.setVisibility(View.GONE);
+                btn_leftArrow.setVisibility(View.GONE);
+            }
+        });
+
+        //make Invitation text clickable and return the normal layout
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btn_go.setVisibility(View.VISIBLE);
+                btn_leftArrow.setVisibility(View.VISIBLE);
+                btn_rightArrow.setVisibility(View.VISIBLE);
             }
         });
 

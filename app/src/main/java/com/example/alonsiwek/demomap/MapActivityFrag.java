@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -18,7 +19,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -65,6 +68,16 @@ public class MapActivityFrag extends Fragment {
                 // For showing a move to my location button
                 googleMap.setMyLocationEnabled(true);
 
+                /////////////////////for DEMO ///////////////
+                double latFake = 34.832102;
+                double lngFake = 32.173139;
+                LatLng posFake = new LatLng(lngFake, latFake);
+
+                mMap.addMarker(new MarkerOptions().position(posFake).title("Ofra Vaygertan")
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+
+                ///////////////////////////////////////////
+
                 // for display my current location at the map (without marker)
                 LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
                 Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(new Criteria(), false));
@@ -100,6 +113,11 @@ public class MapActivityFrag extends Fragment {
             @Override
             public void onClick(View v) {
                 mIsRunning_atMAF = false;
+
+                Toast t = new Toast(getContext());
+                t.makeText(getContext(),
+                        "Good Job!" + '\n' + "You finished your Walkii" + '\n' +
+                        "see you next time!" ,Toast.LENGTH_LONG).show();
 
                 Log.d("MapActivityFrag","mIsRunning_atMAF :" + mIsRunning_atMAF.toString());
 

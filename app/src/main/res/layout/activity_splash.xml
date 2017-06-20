@@ -12,6 +12,6 @@
         android:layout_gravity="center"
         android:layout_marginTop="120dp"
         android:background="@android:color/transparent"
-        android:src="@drawable/logo_splash_screen" />
+        android:src="@drawable/logo_for_splash_hd" />
 
 </LinearLayout>

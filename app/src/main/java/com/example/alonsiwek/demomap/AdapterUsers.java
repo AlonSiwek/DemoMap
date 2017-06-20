@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,8 +17,6 @@ import java.util.List;
  * Created by Dor on 24-May-17.
  * Adapter to Recycle View - show the users that use the app
  */
-
-//TODO: impliment functionalty of the V button.
 
 public class AdapterUsers extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -49,6 +48,7 @@ public class AdapterUsers extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 MainPageFrag.activate_GoButton(true);
             }
         });
+
         return holder;
     }
 
@@ -59,8 +59,15 @@ public class AdapterUsers extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         UserData current = dataOfUsersList.get(position);
         myHolder.textUserName.setText(current.user_name);
-
-
+        myHolder.btn_V.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainPageFrag.activate_GoButton(true);
+                Toast t = new Toast(context);
+                t.makeText(context,
+                        "Your friend is on his way! ",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     // return total item from List
@@ -78,12 +85,14 @@ public class AdapterUsers extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     class MyHolder extends RecyclerView.ViewHolder{
 
         TextView textUserName;
+        ImageButton btn_V;
 
         //Ctor
         public MyHolder(final View itemView) {
 
             super(itemView);
             textUserName = (TextView) itemView.findViewById(R.id.user_name_at_contiener);
+            btn_V = (ImageButton) itemView.findViewById(R.id.button_at_contiener_V);
         }
     }
 }
