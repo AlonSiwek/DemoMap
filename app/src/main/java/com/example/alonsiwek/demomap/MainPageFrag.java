@@ -54,7 +54,7 @@ public class MainPageFrag extends Fragment {
     private static final int UPDATE_RECYCLE_VIEW_DURATION = 5000;
 
     // 3200 is Toast.Length long
-    private static final int SWIPE_TO_MAPS_FRAG_DURATION_GO_BUTTON = 3200 + 200;
+    private static final int SWIPE_TO_MAPS_FRAG_DURATION_GO_BUTTON = 3200 + 50;
     private static final int SWIPE_TO_MAPS_FRAG_DURATION_RIGHT_ARROW_BUTTON = 150;
 
 
@@ -76,7 +76,7 @@ public class MainPageFrag extends Fragment {
         final ImageButton btn_bell = (ImageButton) view.findViewById(R.id.bell);
 
         final TextView numOfNotification = (TextView) view.findViewById(R.id.red_cycle);
-        numOfNotification.setText(String.valueOf("  2"));
+        numOfNotification.setText(String.valueOf("  1"));
 
         // set the viability functionality
         btn_bell.setOnClickListener(new View.OnClickListener() {
