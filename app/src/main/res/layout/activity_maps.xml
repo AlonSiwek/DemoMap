@@ -35,7 +35,8 @@
         android:src="@drawable/finish_hd"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="70dp" />
+        android:layout_marginBottom="70dp"
+        android:clickable="true"/>
 
 
     <android.support.v7.widget.RecyclerView

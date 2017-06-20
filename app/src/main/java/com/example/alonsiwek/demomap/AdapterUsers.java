@@ -17,8 +17,6 @@ import java.util.List;
  * Adapter to Recycle View - show the users that use the app
  */
 
-//TODO: impliment functionalty of the V button.
-
 public class AdapterUsers extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
@@ -59,8 +57,6 @@ public class AdapterUsers extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         UserData current = dataOfUsersList.get(position);
         myHolder.textUserName.setText(current.user_name);
-
-
     }
 
     // return total item from List
