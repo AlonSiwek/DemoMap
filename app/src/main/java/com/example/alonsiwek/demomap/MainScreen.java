@@ -10,8 +10,6 @@ package com.example.alonsiwek.demomap;
  * 2) swipes
  */
 
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,8 +17,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-
-import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +50,7 @@ public class MainScreen extends AppCompatActivity {
         * Identifier for the third fragment.
         * contact
         */
-        //public static final int FRAGMENT_THREE_MENU = 2;
+        public static final int FRAGMENT_THREE_SUMMARY = 2;
 
         /*
         * Identifier for the second fragment.
@@ -68,7 +64,7 @@ public class MainScreen extends AppCompatActivity {
 
         // The number of Total Pages in the app
         // Note: NOT INCREMENT if there is no page added
-        private static int NUM_PAGES_FRAGMENTS = 2;
+        private static int NUM_PAGES_FRAGMENTS = 3;
 
         /*
          * The pager view (widget) - which handles animation and allows swiping horizontally
@@ -102,7 +98,7 @@ public class MainScreen extends AppCompatActivity {
             // Create fragments.
             listFragments.add(FRAGMENT_ONE_MAINSCREEN, new MainPageFrag());
             listFragments.add(FRAGMENT_TWO_MAP, new MapActivityFrag());
-            //listFragments.add(FRAGMENT_THREE_MENU, null);
+            listFragments.add(FRAGMENT_THREE_SUMMARY, new Summary());
 
             /*
              * Setup the fragments, defining the number of fragments, the screens and title
@@ -127,8 +123,8 @@ public class MainScreen extends AppCompatActivity {
                             return "Main Screen";
                         case FRAGMENT_TWO_MAP:
                             return "Map";
-//                        case FRAGMENT_THREE_MENU:
-//                            return "Menu";
+                        case FRAGMENT_THREE_SUMMARY:
+                            return "Summary";
                         default:
                             return null;
                     }

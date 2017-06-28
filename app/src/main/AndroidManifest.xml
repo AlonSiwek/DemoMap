@@ -49,6 +49,11 @@
             </intent-filter>
         </activity>
 
+
+        <activity android:name=".Summary">
+
+        </activity>
+
         <!-- Login -->
         <activity android:name=".Login">
             <intent-filter>

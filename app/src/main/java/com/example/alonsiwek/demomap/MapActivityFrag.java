@@ -1,16 +1,19 @@
 package com.example.alonsiwek.demomap;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -38,7 +41,9 @@ public class MapActivityFrag extends Fragment {
     MapView mMapView;
     private GoogleMap googleMap;
     Boolean mIsRunning_atMAF;
-
+    ////////////////////////////////////Timer on map. number in seconds
+    public int DISPLAY_TIMER_ON_MAP_COUNTER = 120;
+    ///////////////////////////////////
     private static int MAP_ZOOM_RATE = 15;
     private static final int UPDATE_RECYCLE_VIEW_DURATION = 5000;
 
@@ -99,6 +104,24 @@ public class MapActivityFrag extends Fragment {
                 }
             }
         });
+        //////// display timer on map. Fake ETA
+        final TextView tm= (TextView) rootView.findViewById(R.id.timer);
+
+        new CountDownTimer(DISPLAY_TIMER_ON_MAP_COUNTER * 1000, 1000){
+            public void onTick(long millisUntilFinished){
+
+                tm.setText(String.valueOf("  ETA: " + (DISPLAY_TIMER_ON_MAP_COUNTER / 60) + ":" +
+                        (DISPLAY_TIMER_ON_MAP_COUNTER % 60)));
+
+
+                DISPLAY_TIMER_ON_MAP_COUNTER--;
+
+            }
+            public  void onFinish(){
+                tm.setText("Your friend is here!");
+            }
+        }.start();
+
 
         ImageButton finish = (ImageButton)rootView.findViewById(R.id.finish_btn);
 
@@ -107,17 +130,14 @@ public class MapActivityFrag extends Fragment {
         /* update DB only when mIsRunning_atMAF == false.
          * update DB only when mIsRunning == true  will be with btn_go button.
          */
-
         finish.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 mIsRunning_atMAF = false;
 
-                Toast t = new Toast(getContext());
-                t.makeText(getContext(),
-                        "Good Job!" + '\n' + "You finished your Walkii" + '\n' +
-                        "see you next time!" ,Toast.LENGTH_LONG).show();
+
+
 
                 Log.d("MapActivityFrag","mIsRunning_atMAF :" + mIsRunning_atMAF.toString());
 
@@ -135,6 +155,10 @@ public class MapActivityFrag extends Fragment {
                         }
                     }).start();
                 }
+                ((MainScreen.PageAdapter)getActivity()).setCurrentItem
+                        (MainScreen.PageAdapter.FRAGMENT_THREE_SUMMARY , true);
+
+
             }
         });
 
